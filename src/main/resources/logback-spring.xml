@@ -9,7 +9,7 @@
     <springProfile name="local">
 
         <!-- Registrar o conversor %kv (usa atributo 'class' para evitar warning) -->
-        <conversionRule conversionWord="kv" class="br.com.felipefmb.competitors.infrastructure.configs.LoggerConfig"/>
+        <conversionRule conversionWord="kv" class="br.com.felipefmb.competitors.configs.LoggerConfig"/>
 
         <appender name="CONSOLE_TEXT" class="ch.qos.logback.core.ConsoleAppender">
             <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
