@@ -78,13 +78,15 @@ src/
 
 
 Listsa de tarefas:
-  - 01: Configurar a aplicação              - OK
-    02: Montar o endpoint rest              - OK
-    03: Ler o arquivo CSV                   - OK
-    04: Montar a estrutura de inicialização - OK
-    05: Montar a estrutura de conexão com o banco de dados
-    06: Fazer a estrutura de inicialização gerar os dados no banco de dados
-    07: Configurar o endpoint rest para retornar os dados conforme as regras de negócio
-    08: Garantir que os verbos http e status code estejam de acordo
-    09: Gerar um Dockerfile para executar a aplicação via docker
-    10: Gerar o Readme.md com instruções para rodar o projeto e os testes de integração.
+  - 01: Configurar a aplicação                                                           - OK
+    02: Montar o endpoint rest                                                           - OK
+    03: Ler o arquivo CSV                                                                - OK
+    04: Montar a estrutura de inicialização                                              - OK
+    05: Montar a estrutura de conexão com o banco de dados                               - OK
+    06: Fazer a estrutura de inicialização gerar os dados no banco de dados              - OK
+    07: Gerar um Dockerfile para executar a aplicação via docker                         - OK
+    08: Aplicar o OpenAPI                                                                - OK
+    09: Configurar o endpoint rest para retornar os dados conforme as regras de negócio
+    10: Garantir que os verbos http e status code estejam de acordo
+    11: Gerar o Readme.md com instruções para rodar o projeto e os testes de integração.
+
