@@ -1,0 +1,90 @@
+Teste Outsera
+
+Não sair fazendo: Primeiro fazer a análise do projeto.
+  - Elaborar documento com refinamento técnico
+  - Elaboração de desenho de arquitetura
+  - Elaboração de desenho de solução técnica
+  - Elaborar um diagrama de sequência
+  - Deixar a aplicação passível de evolução em contextos de negócio
+  - Deixar a aplicação observável
+  - Deixar a aplicação monitorável
+  - A aplicação deve suportar a volumetria de transações. Qual a volumetria?
+  - Qual é o público da API? Qual é a criticidade?
+  - Quais cenários serão testados nos testes de integração?
+  - Elaborar a documentação técnica da API
+  - Elaborar a documentação de negócio da API
+  - Adicionar o OpenApi(Swagger)
+
+Nome da API: Bom nome para uma api que irá retornar dados de prêmios obtidos por competidores:
+- A primeira competição que irá originar a lista será o Golden Raspberry Awards
+  - Projetar a API para que ela possa evoluir para comportar outros prêmios com lógica de negócio separada entre cada prêmio, respeitando a sepação do contexto de domínio
+- Definir uma arquitetura de solução escalável e simples
+  - DDD, Hexagonal, Clean Architecture
+- A API será implantada em ambiente online(AWS)?
+
+- Entendimento dos requisitos
+  - O web service RESTful deve ser implementado com base no nível 2 de maturidade de
+    Richardson;
+    Nível 2 – Verbos HTTP e códigos de status
+    Além de separar os recursos em URIs, agora se faz uso correto dos métodos HTTP:
+    GET /filmes → listar
+    POST /filmes → criar
+    GET /filmes/{id} → buscar por id
+    PUT /filmes/{id} → atualizar
+    DELETE /filmes/{id} → remover
+    Também deve retornar códigos de status HTTP adequados:
+    200 OK, 201 Created, 404 Not Found, 400 Bad Request, etc.
+    Esse nível é o que normalmente se espera de uma API RESTful “básica”.
+
+  - 1. Obter o produtor com maior intervalo entre dois prêmios consecutivos, e o que obteve dois
+        prêmios mais rápido, seguindo a especificação de formato definida na página 2.
+
+Dúvidas:
+1. Se vai ser testado com um conjunto diferente de testes, precisa ter um endpoint para cadastro ou vai procurar apenas com os dados da amostragem? ou o conjunto de dados será alterado para poder fazer os testes?
+2. 
+
+src/
+└── main/
+    └── java/
+        └── com/
+            └── exemplo/
+                └── meuprojeto/
+                    ├── core/
+                    │   ├── domain/
+                    │   │   ├── Cliente.java
+                    │   │   └── Pedido.java
+                    │   └── ports/
+                    │       ├── in/
+                    │       │   └── PedidoServicePort.java // Interface para a camada de aplicação
+                    │       └── out/
+                    │           └── PedidoRepositoryPort.java // Interface para a persistência
+                    ├── application/
+                    │   └── service/
+                    │       └── PedidoService.java // Implementa PedidoServicePort
+                    └── infrastructure/
+                        ├── adapter/
+                        │   ├── in/
+                        │   │   └── rest/
+                        │   │       └── PedidoController.java // Adaptador de entrada (REST)
+                        │   └── out/
+                        │       └── persistence/
+                        │           ├── repository/
+                        │           │   └── PedidoRepositoryImpl.java // Implementa PedidoRepositoryPort
+                        │           └── entity/
+                        │               └── PedidoEntity.java // Entidade para o banco
+                        └── config/
+                            └── PedidoConfig.java // Configuração de beans
+
+
+
+Listsa de tarefas:
+  - 01: Configurar a aplicação              - OK
+    02: Montar o endpoint rest              - OK
+    03: Ler o arquivo CSV                   - OK
+    04: Montar a estrutura de inicialização - OK
+    05: Montar a estrutura de conexão com o banco de dados
+    06: Fazer a estrutura de inicialização gerar os dados no banco de dados
+    07: Configurar o endpoint rest para retornar os dados conforme as regras de negócio
+    08: Garantir que os verbos http e status code estejam de acordo
+    09: Gerar um Dockerfile para executar a aplicação via docker
+    10: Gerar o Readme.md com instruções para rodar o projeto e os testes de integração.

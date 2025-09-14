@@ -1,0 +1,21 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Opcional: mude se o JAR estiver em outro diretório
+        DEPENDENCY: build
+    container_name: movies-app
+    command:
+      - "--spring.profiles.active=${PROFILE:-local}"
+    ports:
+      - "${PORT:-8500}:${PORT:-8500}"
+    environment:
+      # Variáveis úteis para o Spring (opcional)
+      SPRING_DATASOURCE_URL: jdbc:h2:mem:moviesdb;MODE=PostgreSQL;DATABASE_TO_UPPER=false;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
+      LOGGING_LEVEL_ROOT: INFO
+      TZ: America/Sao_Paulo
+    restart: unless-stopped
