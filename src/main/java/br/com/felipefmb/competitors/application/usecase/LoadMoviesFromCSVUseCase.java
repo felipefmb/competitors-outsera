@@ -2,6 +2,7 @@ package br.com.felipefmb.competitors.application.usecase;
 
 import br.com.felipefmb.competitors.domain.model.Movie;
 import br.com.felipefmb.competitors.domain.ports.in.MovieCsvSource;
+import br.com.felipefmb.competitors.domain.ports.out.MovieRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -10,14 +11,16 @@ import java.util.List;
 public class LoadMoviesFromCSVUseCase {
 
     private final MovieCsvSource csvSource;
+    private final MovieUseCase movieUseCase;
 
-
-    public LoadMoviesFromCSVUseCase(MovieCsvSource csvSource) {
+    public LoadMoviesFromCSVUseCase(MovieCsvSource csvSource, MovieUseCase movieUseCase) {
         this.csvSource = csvSource;
+        this.movieUseCase = movieUseCase;
     }
 
     public List<Movie> execute() {
-        return csvSource.loadMovies();
+        var movies = csvSource.loadMovies();
+        return movieUseCase.save(movies);
     }
 
 }
