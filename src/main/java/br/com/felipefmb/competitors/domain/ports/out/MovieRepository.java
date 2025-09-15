@@ -8,5 +8,4 @@ import java.util.List;
 public interface MovieRepository {
     Movie save(Movie movie);
     List<Movie> findAll();
-
 }

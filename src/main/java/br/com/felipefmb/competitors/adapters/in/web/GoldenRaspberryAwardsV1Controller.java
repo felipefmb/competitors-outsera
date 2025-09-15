@@ -4,8 +4,9 @@ import br.com.felipefmb.competitors.adapters.in.web.mapper.DataMapper;
 import br.com.felipefmb.competitors.adapters.in.web.mapper.MovieWebMapper;
 import br.com.felipefmb.competitors.adapters.in.web.request.MovieRequest;
 import br.com.felipefmb.competitors.adapters.in.web.response.DataResponse;
+import br.com.felipefmb.competitors.application.usecase.MovieUseCase;
 import br.com.felipefmb.competitors.domain.Log;
-import br.com.felipefmb.competitors.domain.service.LoadMoviesFromCSVService;
+import br.com.felipefmb.competitors.application.usecase.LoadMoviesFromCSVUseCase;
 import br.com.felipefmb.competitors.domain.exceptions.GoldenRaspberryAwardsException;
 import br.com.felipefmb.competitors.domain.model.Movie;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,10 +26,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/v1/golden-raspberry-awards")
 public class GoldenRaspberryAwardsV1Controller {
 
-    private final LoadMoviesFromCSVService loadMoviesFromCSVService;
+    private final LoadMoviesFromCSVUseCase loadMoviesFromCSVUseCase;
 
-    public GoldenRaspberryAwardsV1Controller(LoadMoviesFromCSVService loadMoviesFromCSVService) {
-        this.loadMoviesFromCSVService = loadMoviesFromCSVService;
+    private final MovieUseCase movieUseCase;
+
+    public GoldenRaspberryAwardsV1Controller(LoadMoviesFromCSVUseCase loadMoviesFromCSVUseCase, MovieUseCase movieUseCase) {
+        this.loadMoviesFromCSVUseCase = loadMoviesFromCSVUseCase;
+        this.movieUseCase = movieUseCase;
     }
 
     @Operation(summary = "Lista filmes", description = "Retorna uma página de filmes")
@@ -40,11 +44,11 @@ public class GoldenRaspberryAwardsV1Controller {
     @GetMapping(value = "/movies", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<DataResponse> movies() {
         try {
-            var movies = loadMoviesFromCSVService.read();
+            var movies = loadMoviesFromCSVUseCase.execute();
             var movieResponse = MovieWebMapper.toResponse(movies);
             var dataResponse = DataMapper.toData(movieResponse);
             return ResponseEntity.ok().body(dataResponse);
-        } catch (IOException e) {
+        } catch (Exception e) {
             String message = MessageFormat.format("Error on load data from CSV File {0}", "moviesList.csv");
             Log.error(message, e.fillInStackTrace());
             var dataResponse = DataMapper.toData(message);
@@ -55,10 +59,10 @@ public class GoldenRaspberryAwardsV1Controller {
     @PostMapping(value = "/movies", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<DataResponse> saveMovies(@RequestBody MovieRequest movieRequest) {
         try {
-            var toDoman = MovieWebMapper.toDomain(movieRequest);
-
-            return ResponseEntity.ok().body(movies);
-        } catch (IOException e) {
+            var toDomain = MovieWebMapper.toDomain(movieRequest);
+            var toData = DataMapper.toData(toDomain);
+            return ResponseEntity.ok().body(toData);
+        } catch (Exception e) {
             String message = MessageFormat.format("Error on load data from CSV File {0}", "moviesList.csv");
             Log.error(message, e.fillInStackTrace());
             throw new GoldenRaspberryAwardsException(message);
