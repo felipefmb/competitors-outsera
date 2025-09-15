@@ -3,11 +3,12 @@ package br.com.felipefmb.competitors.adapters.out.persistence.mapper;
 import br.com.felipefmb.competitors.adapters.out.persistence.entity.MovieEntity;
 import br.com.felipefmb.competitors.domain.model.Movie;
 
+import java.util.List;
 import java.util.Objects;
 
 public class MoviePersistenceMapper {
 
-    public Movie toDomain(MovieEntity entity) {
+    public static Movie toDomain(MovieEntity entity) {
         if (Objects.isNull(entity)) return null;
         return new Movie(
                 entity.getId(),
@@ -19,15 +20,25 @@ public class MoviePersistenceMapper {
         );
     }
 
-    public MovieEntity toEntity(Movie d) {
-        if (d == null) return null;
+    public static List<Movie> toDomain(List<MovieEntity> entities) {
+        if (Objects.isNull(entities)) return null;
+        return entities.stream().map(MoviePersistenceMapper::toDomain).toList();
+    }
+
+    public static MovieEntity toEntity(Movie domain) {
+        if (Objects.isNull(domain)) return null;
         return new MovieEntity(
-                d.year(),
-                d.title(),
-                d.studio(),
-                d.producer(),
-                d.winner()
+                domain.year(),
+                domain.title(),
+                domain.studio(),
+                domain.producer(),
+                domain.winner()
         );
+    }
+
+    public static List<MovieEntity> toEntity(List<Movie> domains) {
+        if (Objects.isNull(domains)) return null;
+        return domains.stream().map(MoviePersistenceMapper::toEntity).toList();
     }
 
 }
