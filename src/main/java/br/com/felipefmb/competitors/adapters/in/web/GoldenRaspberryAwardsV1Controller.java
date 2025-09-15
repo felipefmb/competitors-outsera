@@ -43,12 +43,16 @@ public class GoldenRaspberryAwardsV1Controller {
     })
     @GetMapping(value = "/movies", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<DataResponse> movies() {
+        Log.info("Starting query of all films");
         try {
+            Log.info("Querying all records");
             var movies = movieUseCase.findAll();
+            Log.info("Consultation completed");
             var movieResponse = MovieWebMapper.toResponse(movies);
             var dataResponse = DataMapper.toData(movieResponse);
+            Log.info("Returning results");
             return ResponseEntity.ok().body(dataResponse);
-        } catch (Exception e) {
+        } catch (GoldenRaspberryAwardsException e) {
             String message = MessageFormat.format("Error on load data from CSV File {0}", "moviesList.csv");
             Log.error(message, e.fillInStackTrace());
             var dataResponse = DataMapper.toData(message);

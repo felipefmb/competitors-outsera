@@ -1,6 +1,7 @@
 package br.com.felipefmb.competitors.adapters.out.persistence.repositories;
 
 import br.com.felipefmb.competitors.adapters.out.persistence.mapper.MoviePersistenceMapper;
+import br.com.felipefmb.competitors.domain.Log;
 import br.com.felipefmb.competitors.domain.model.Movie;
 import br.com.felipefmb.competitors.domain.ports.out.MovieRepository;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,7 @@ public class MovieRepositoryImpl implements MovieRepository {
     @Override
     public List<Movie> findAll() {
         var entities = repository.findAll();
+        Log.info("Records found");
         return MoviePersistenceMapper.toDomain(entities);
     }
 }

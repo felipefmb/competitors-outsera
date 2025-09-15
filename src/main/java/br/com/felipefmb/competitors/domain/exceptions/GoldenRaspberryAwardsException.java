@@ -5,4 +5,8 @@ public class GoldenRaspberryAwardsException extends RuntimeException {
     public GoldenRaspberryAwardsException(String message) {
         super(message);
     }
+
+    public GoldenRaspberryAwardsException(Throwable cause) {
+        super(cause);
+    }
 }

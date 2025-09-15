@@ -1,5 +1,6 @@
 package br.com.felipefmb.competitors.application.usecase;
 
+import br.com.felipefmb.competitors.domain.exceptions.GoldenRaspberryAwardsException;
 import br.com.felipefmb.competitors.domain.model.Movie;
 import br.com.felipefmb.competitors.domain.ports.out.MovieRepository;
 import jakarta.transaction.Transactional;
@@ -27,7 +28,11 @@ public class MovieUseCase {
     }
 
     public List<Movie> findAll() {
-        return repository.findAll();
+        try {
+            return repository.findAll();
+        } catch (Exception e) {
+            throw new GoldenRaspberryAwardsException(e);
+        }
     }
 
 
