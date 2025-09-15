@@ -5,6 +5,8 @@ import br.com.felipefmb.competitors.domain.ports.out.MovieRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MovieUseCase {
 
@@ -18,5 +20,15 @@ public class MovieUseCase {
     public Movie save(Movie domain) {
         return repository.save(domain);
     }
+
+    @Transactional
+    public List<Movie> save(List<Movie> domain) {
+        return repository.save(domain);
+    }
+
+    public List<Movie> findAll() {
+        return repository.findAll();
+    }
+
 
 }

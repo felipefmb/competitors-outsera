@@ -44,7 +44,7 @@ public class GoldenRaspberryAwardsV1Controller {
     @GetMapping(value = "/movies", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<DataResponse> movies() {
         try {
-            var movies = loadMoviesFromCSVUseCase.execute();
+            var movies = movieUseCase.findAll();
             var movieResponse = MovieWebMapper.toResponse(movies);
             var dataResponse = DataMapper.toData(movieResponse);
             return ResponseEntity.ok().body(dataResponse);

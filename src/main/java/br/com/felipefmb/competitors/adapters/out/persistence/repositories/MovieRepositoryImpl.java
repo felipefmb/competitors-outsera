@@ -25,6 +25,10 @@ public class MovieRepositoryImpl implements MovieRepository {
         return MoviePersistenceMapper.toDomain(entity);
     }
 
+    public List<Movie> save(List<Movie> movies) {
+        return movies.stream().map(this::save).toList();
+    }
+
     @Override
     public List<Movie> findAll() {
         var entities = repository.findAll();
