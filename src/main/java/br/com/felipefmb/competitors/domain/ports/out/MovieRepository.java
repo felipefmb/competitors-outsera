@@ -11,4 +11,6 @@ public interface MovieRepository {
     List<Movie> save(List<Movie> movie);
 
     List<Movie> findAll();
+
+    List<Movie> findWinners();
 }
