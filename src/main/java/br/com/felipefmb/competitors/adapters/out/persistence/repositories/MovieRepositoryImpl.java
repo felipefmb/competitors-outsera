@@ -36,4 +36,11 @@ public class MovieRepositoryImpl implements MovieRepository {
         Log.info("Records found");
         return MoviePersistenceMapper.toDomain(entities);
     }
+
+    @Override
+    public List<Movie> findWinners() {
+        var entities = repository.findWinners();
+        Log.info("Records found");
+        return MoviePersistenceMapper.toDomain(entities);
+    }
 }

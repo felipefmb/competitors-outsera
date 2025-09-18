@@ -35,5 +35,13 @@ public class MovieUseCase {
         }
     }
 
+    public List<Movie> findWinners() {
+        try {
+            return repository.findWinners();
+        } catch (Exception e) {
+            throw new GoldenRaspberryAwardsException(e);
+        }
+    }
+
 
 }

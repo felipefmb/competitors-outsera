@@ -12,4 +12,5 @@ public record MovieResponse(
         String studio,
         String producer,
         boolean winner
-) {}
+) implements Response {
+}
