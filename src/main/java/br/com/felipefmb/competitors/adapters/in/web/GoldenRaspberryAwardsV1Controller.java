@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -86,8 +87,10 @@ public class GoldenRaspberryAwardsV1Controller {
                     .toList());
 
             listResponsesIntervals.sort(Comparator.comparingInt(IntervalResponse::interval));
-            List<IntervalResponse> min = listResponsesIntervals.subList(0, 1);
-            List<IntervalResponse> max = List.of(listResponsesIntervals.get(listResponsesIntervals.size() - 1));
+            List<Integer> minIntervals = listResponsesIntervals.subList(0, 2).stream().map(IntervalResponse::interval).toList();
+            List<Integer> maxInterval = Stream.of(listResponsesIntervals.get(listResponsesIntervals.size() - 1)).map(IntervalResponse::interval).toList();
+            List<IntervalResponse> min = listResponsesIntervals.stream().filter(l -> minIntervals.contains(l.interval())).toList();
+            List<IntervalResponse> max = listResponsesIntervals.stream().filter(l -> maxInterval.contains(l.interval())).toList();
             var response = new WinnersResponse(min, max);
             Log.info("Returning results");
             return ResponseEntity.ok().body(response);
