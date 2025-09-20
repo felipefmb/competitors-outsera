@@ -6,8 +6,8 @@ public record Movie(
         BigInteger id,
         int year,
         String title,
-        String studio,
-        String producer,
+        Studio studio,
+        Producer producer,
         boolean winner
 ) {
 }

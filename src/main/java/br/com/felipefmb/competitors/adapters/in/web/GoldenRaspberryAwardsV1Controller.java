@@ -1,11 +1,10 @@
 package br.com.felipefmb.competitors.adapters.in.web;
 
 import br.com.felipefmb.competitors.adapters.in.web.mapper.DataMapper;
-import br.com.felipefmb.competitors.adapters.in.web.mapper.WinnerMapper;
+import br.com.felipefmb.competitors.adapters.in.web.mapper.ProducerInfoMapper;
 import br.com.felipefmb.competitors.adapters.in.web.response.Response;
-import br.com.felipefmb.competitors.application.usecase.IntervalsUseCase;
+import br.com.felipefmb.competitors.application.usecase.ProducersUseCase;
 import br.com.felipefmb.competitors.application.usecase.MovieUseCase;
-import br.com.felipefmb.competitors.application.usecase.WinnersUseCase;
 import br.com.felipefmb.competitors.domain.Log;
 import br.com.felipefmb.competitors.domain.exceptions.GoldenRaspberryAwardsException;
 import br.com.felipefmb.competitors.domain.exceptions.NotFoundException;
@@ -29,15 +28,11 @@ public class GoldenRaspberryAwardsV1Controller {
 
     private final MovieUseCase movieUseCase;
 
-    private final IntervalsUseCase intervalsUseCase;
+    private final ProducersUseCase producersUseCase;
 
-    private final WinnersUseCase winnersUseCase;
-
-
-    public GoldenRaspberryAwardsV1Controller(MovieUseCase movieUseCase, IntervalsUseCase intervalsUseCase, WinnersUseCase winnersUseCase) {
+    public GoldenRaspberryAwardsV1Controller(MovieUseCase movieUseCase, ProducersUseCase producersUseCase) {
         this.movieUseCase = movieUseCase;
-        this.intervalsUseCase = intervalsUseCase;
-        this.winnersUseCase = winnersUseCase;
+        this.producersUseCase = producersUseCase;
     }
 
     @Operation(summary = "Lista filmes", description = "Retorna uma página de filmes")
@@ -46,9 +41,8 @@ public class GoldenRaspberryAwardsV1Controller {
     public ResponseEntity<Response> producersIntervals() {
         try {
             var movies = movieUseCase.getMovies();
-            var intervals = intervalsUseCase.getIntervals(movies);
-            var winners = winnersUseCase.getWinners(intervals);
-            return ResponseEntity.ok().body(WinnerMapper.toData(winners));
+            var producersWinners = producersUseCase.getProducersWinners(movies);
+            return ResponseEntity.ok().body(ProducerInfoMapper.toData(producersWinners));
         } catch (NotFoundException e) {
             return ResponseEntity.status(204).build();
         } catch (GoldenRaspberryAwardsException e) {

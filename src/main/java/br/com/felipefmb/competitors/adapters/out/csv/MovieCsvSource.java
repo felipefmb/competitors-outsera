@@ -2,6 +2,8 @@ package br.com.felipefmb.competitors.adapters.out.csv;
 
 import br.com.felipefmb.competitors.domain.exceptions.FileReaderException;
 import br.com.felipefmb.competitors.domain.model.Movie;
+import br.com.felipefmb.competitors.domain.model.Producer;
+import br.com.felipefmb.competitors.domain.model.Studio;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +19,7 @@ public class MovieCsvSource extends ClassPathCsvSource<Movie> {
         String producer = get(csvRecord, "producers");
         boolean winner = parseWinner(get(csvRecord, "winner"));
         if (title == null || title.isBlank() || year == null) return null;
-        return new Movie(null, year, title, studio, producer, winner);
+        return new Movie(null, year, title, new Studio(studio), new Producer(producer), winner);
     }
 
     private static String get(CSVRecord csvRecord, String header) {

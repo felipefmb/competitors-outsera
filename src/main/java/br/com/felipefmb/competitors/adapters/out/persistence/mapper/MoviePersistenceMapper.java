@@ -2,6 +2,8 @@ package br.com.felipefmb.competitors.adapters.out.persistence.mapper;
 
 import br.com.felipefmb.competitors.adapters.out.persistence.entity.MovieEntity;
 import br.com.felipefmb.competitors.domain.model.Movie;
+import br.com.felipefmb.competitors.domain.model.Producer;
+import br.com.felipefmb.competitors.domain.model.Studio;
 
 import java.util.Collections;
 import java.util.List;
@@ -9,7 +11,8 @@ import java.util.Objects;
 
 public class MoviePersistenceMapper {
 
-    private MoviePersistenceMapper() {}
+    private MoviePersistenceMapper() {
+    }
 
     public static Movie toDomain(MovieEntity entity) {
         if (Objects.isNull(entity)) return null;
@@ -17,8 +20,8 @@ public class MoviePersistenceMapper {
                 entity.getId(),
                 entity.getYear(),
                 entity.getTitle(),
-                entity.getStudio(),
-                entity.getProducer(),
+                new Studio(entity.getStudio()),
+                new Producer(entity.getProducer()),
                 entity.isWinner()
         );
     }
@@ -33,8 +36,8 @@ public class MoviePersistenceMapper {
         return new MovieEntity(
                 domain.year(),
                 domain.title(),
-                domain.studio(),
-                domain.producer(),
+                domain.studio().name(),
+                domain.producer().name(),
                 domain.winner()
         );
     }

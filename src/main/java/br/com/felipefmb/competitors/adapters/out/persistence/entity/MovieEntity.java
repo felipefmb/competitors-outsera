@@ -23,7 +23,7 @@ public class MovieEntity {
     @Column(name = "studio")
     private String studio;
 
-    @Column(name = "producer")
+    @Column(name = "producer", nullable = false)
     private String producer;
 
     @Column(name = "winner", nullable = false)
