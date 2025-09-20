@@ -1,5 +1,6 @@
 package br.com.felipefmb.competitors.adapters.out.csv;
 
+import br.com.felipefmb.competitors.domain.exceptions.FileReaderException;
 import br.com.felipefmb.competitors.domain.model.Movie;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Component;
@@ -21,22 +22,22 @@ public class MovieCsvSource extends ClassPathCsvSource<Movie> {
 
     private static String get(CSVRecord csvRecord, String header) {
         if (csvRecord.isMapped(header)) return csvRecord.get(header);
-        for (String headerValue : csvRecord.getParser().getHeaderNames()) {
-            if (headerValue != null && headerValue.equalsIgnoreCase(header)) return csvRecord.get(headerValue);
-        }
-        return null;
+        return csvRecord.getParser().getHeaderNames().stream()
+                .filter(headerValue -> headerValue != null && headerValue.equalsIgnoreCase(header))
+                .findFirst()
+                .map(csvRecord::get)
+                .orElse(null);
     }
 
     private static Integer parseInt(String value) {
-        if (Objects.isNull(value) || value.isBlank()) return null;
         try {
-            return Integer.valueOf(value.trim());
+            return (value == null || value.isBlank()) ? null : Integer.valueOf(value.trim());
         } catch (NumberFormatException e) {
-            return null;
+            throw new FileReaderException(e.getMessage(), e.getCause());
         }
     }
 
     private static boolean parseWinner(String value) {
-        return value != null && value.trim().equalsIgnoreCase("yes");
+        return Objects.nonNull(value) && value.trim().toLowerCase().contains("y");
     }
 }
