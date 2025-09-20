@@ -14,7 +14,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,11 +41,7 @@ public class GoldenRaspberryAwardsV1Controller {
     }
 
     @Operation(summary = "Lista filmes", description = "Retorna uma página de filmes")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Movie.class)))
-    })
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Movie.class)))
     @GetMapping(value = "/producers/winners", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Response> producersIntervals() {
         try {
@@ -55,7 +50,7 @@ public class GoldenRaspberryAwardsV1Controller {
             var winners = winnersUseCase.getWinners(intervals);
             return ResponseEntity.ok().body(WinnerMapper.toData(winners));
         } catch (NotFoundException e) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.status(204).build();
         } catch (GoldenRaspberryAwardsException e) {
             Log.error(e.getMessage(), e.fillInStackTrace());
             var dataResponse = DataMapper.toData(e.getMessage());

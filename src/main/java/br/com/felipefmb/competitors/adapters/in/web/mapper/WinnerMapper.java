@@ -5,6 +5,9 @@ import br.com.felipefmb.competitors.domain.model.Winners;
 
 public class WinnerMapper {
 
+    private WinnerMapper() {
+    }
+
     public static WinnersResponse toData(Winners winners) {
         return new WinnersResponse(
                 winners.min(),
