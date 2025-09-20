@@ -1,14 +1,12 @@
 package br.com.felipefmb.competitors.adapters.out.csv;
 
-import br.com.felipefmb.competitors.domain.model.Movie;
+import br.com.felipefmb.competitors.domain.exceptions.FileReaderException;
 import br.com.felipefmb.competitors.domain.ports.in.CsvSource;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -45,9 +43,7 @@ public abstract class ClassPathCsvSource<T> implements CsvSource<T> {
                 list.add(object);
             }
         } catch (IOException e) {
-            // logar aqui (adapter) — não no use case
-            // logger.warn("Erro lendo CSV", e);
-            return List.of();
+            throw new FileReaderException(e.getMessage(), e.getCause());
         }
         return list;
     }
