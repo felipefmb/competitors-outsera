@@ -6,13 +6,11 @@ import br.com.felipefmb.competitors.domain.exceptions.NotFoundException;
 import br.com.felipefmb.competitors.domain.model.Movie;
 import br.com.felipefmb.competitors.domain.ports.out.MovieRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-
+import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Objects;
 
-@Service
+@Component
 public class MovieUseCase {
 
     private final MovieRepository repository;
@@ -29,14 +27,6 @@ public class MovieUseCase {
     @Transactional
     public List<Movie> save(List<Movie> domain) {
         return repository.save(domain);
-    }
-
-    public List<Movie> findAll() {
-        try {
-            return repository.findAll();
-        } catch (Exception e) {
-            throw new GoldenRaspberryAwardsException(e);
-        }
     }
 
     private List<Movie> findMovies() {

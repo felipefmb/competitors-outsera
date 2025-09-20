@@ -1,9 +1,7 @@
 package br.com.felipefmb.competitors.application.usecase;
 
 import br.com.felipefmb.competitors.domain.model.Interval;
-import br.com.felipefmb.competitors.adapters.in.web.response.WinnersResponse;
 import br.com.felipefmb.competitors.domain.model.Winners;
-import br.com.felipefmb.competitors.domain.ports.out.MovieRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -12,9 +10,6 @@ import java.util.stream.Stream;
 
 @Service
 public class WinnersUseCase {
-
-    public WinnersUseCase() {
-    }
 
     public Winners getWinners(List<Interval> listResponsesIntervals) {
         int qtdeRecords = listResponsesIntervals.size();
