@@ -5,11 +5,18 @@ import br.com.felipefmb.competitors.domain.model.Producer;
 
 public class ProducerMapper implements Mapper<Producer, ProducerEntity> {
 
+    private final MovieMapper movieMapper;
+
+    public ProducerMapper() {
+        this.movieMapper = new MovieMapper();
+    }
+
     @Override
     public Producer toDomain(ProducerEntity entity) {
         return new Producer(
                 entity.getId(),
-                entity.getName()
+                entity.getName(),
+                movieMapper.toDomains(entity.getMovies())
         );
     }
 
@@ -18,7 +25,7 @@ public class ProducerMapper implements Mapper<Producer, ProducerEntity> {
         return new ProducerEntity(
                 domain.id(),
                 domain.name(),
-                null
+                movieMapper.toEntities(domain.movies())
         );
     }
 

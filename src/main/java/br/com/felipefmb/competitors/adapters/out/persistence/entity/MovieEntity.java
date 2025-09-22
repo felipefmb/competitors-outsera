@@ -30,12 +30,7 @@ public class MovieEntity {
     )
     private Set<StudioEntity> movieStudios;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name = "movie_producer",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "producer_id")
-    )
+    @ManyToMany(mappedBy = "movies")
     private Set<ProducerEntity> movieProducers;
 
     @Column(name = "winner", nullable = false)
@@ -105,14 +100,6 @@ public class MovieEntity {
     public MovieEntity setWinner(boolean winner) {
         this.winner = winner;
         return this;
-    }
-
-    public void addMovieStudio(StudioEntity studio) {
-        this.movieStudios.add(studio);
-    }
-
-    public void addMovieProducer(ProducerEntity producer) {
-        this.movieProducers.add(producer);
     }
 
     @Override

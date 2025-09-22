@@ -7,7 +7,6 @@ public record Movie(
         BigInteger id,
         int releaseYear,
         String title,
-        Set<Producer> producers,
         Set<Studio> studios,
         boolean winner
 ) implements Domain {

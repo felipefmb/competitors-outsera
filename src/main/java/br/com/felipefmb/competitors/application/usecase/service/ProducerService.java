@@ -10,15 +10,18 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ProducerService {
 
     private final ProducerRepository repository;
     private final ProducerMapper mapper;
+    private final MovieService movieService;
 
-    public ProducerService(ProducerRepository repository) {
+    public ProducerService(ProducerRepository repository, MovieService movieService) {
         this.repository = repository;
+        this.movieService = movieService;
         this.mapper = new ProducerMapper();
     }
 
@@ -29,6 +32,7 @@ public class ProducerService {
 
     public ProducerEntity save(Producer producer) {
         ProducerEntity entity = mapper.toEntity(producer);
+        entity.setMovies(entity.getMovies().stream().map(f -> movieService.findById(f.getId())).collect(Collectors.toSet()));
         return repository.save(entity);
     }
 

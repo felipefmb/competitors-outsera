@@ -19,7 +19,13 @@ public class ProducerEntity {
     @Column(name = "name", nullable = false, length = 500)
     private String name;
 
-    @ManyToMany(mappedBy = "movieProducers")
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "producer_movie",
+            joinColumns = @JoinColumn(name = "producer_id"),
+            inverseJoinColumns = @JoinColumn(name = "movie_id")
+    )
     private Set<MovieEntity> movies;
 
     public ProducerEntity() {

@@ -7,8 +7,6 @@ import br.com.felipefmb.competitors.domain.model.Studio;
 import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 @Component
@@ -27,12 +25,12 @@ public class StudioUseCase {
         return mapper.toDomain(entity);
     }
 
-    public List<Studio> findByName(String name) {
+    public Studio findByName(String name) {
         var entities = service.findByName(name);
-        if (Objects.isNull(entities) || entities.isEmpty()) {
-            return Collections.emptyList();
+        if (Objects.isNull(entities)) {
+            return null;
         }
-        return mapper.toDomains(entities);
+        return mapper.toDomain(entities);
     }
 
     public Studio findById(BigInteger id) {

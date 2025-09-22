@@ -30,7 +30,7 @@ public class StudioService {
         return repository.save(entity);
     }
 
-    public List<StudioEntity> findByName(String name) {
+    public StudioEntity findByName(String name) {
         return repository.findByName(name);
     }
 
