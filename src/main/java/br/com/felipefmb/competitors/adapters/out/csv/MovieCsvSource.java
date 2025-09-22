@@ -1,45 +1,46 @@
 package br.com.felipefmb.competitors.adapters.out.csv;
 
-import br.com.felipefmb.competitors.domain.exceptions.FileReaderException;
-import br.com.felipefmb.competitors.domain.model.Movie;
-import br.com.felipefmb.competitors.domain.model.Producer;
-import br.com.felipefmb.competitors.domain.model.Studio;
-import org.apache.commons.csv.CSVRecord;
+import br.com.felipefmb.competitors.adapters.out.csv.dto.MovieCsvSourceDTO;
+import br.com.felipefmb.competitors.domain.exceptions.MovieException;
+import org.apache.commons.csv.CSVParser;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 @Component
-public class MovieCsvSource extends ClassPathCsvSource<Movie> {
+public class MovieCsvSource extends ClassPathCsvSource<MovieCsvSourceDTO> {
+
     @Override
-    Movie generateObject(CSVRecord csvRecord) {
-        Integer year = parseInt(get(csvRecord, "year"));
-        String title = get(csvRecord, "title");
-        String studio = get(csvRecord, "studios");
-        String producer = get(csvRecord, "producers");
-        boolean winner = parseWinner(get(csvRecord, "winner"));
-        if (title == null || title.isBlank() || year == null) return null;
-        return new Movie(null, year, title, new Studio(studio), new Producer(producer), winner);
+    protected List<MovieCsvSourceDTO> generateObjects(CSVParser parser) {
+        var movies = getMovies(parser);
+        if (Objects.isNull(movies) || movies.isEmpty()) throw new MovieException("Invalid CSV file");
+        return movies;
     }
 
-    private static String get(CSVRecord csvRecord, String header) {
-        if (csvRecord.isMapped(header)) return csvRecord.get(header);
-        return csvRecord.getParser().getHeaderNames().stream()
-                .filter(headerValue -> headerValue != null && headerValue.equalsIgnoreCase(header))
-                .findFirst()
-                .map(csvRecord::get)
-                .orElse(null);
+    private List<MovieCsvSourceDTO> getMovies(CSVParser parser) {
+        return parser.stream()
+                .map(csvRecord -> {
+                    Integer releaseYear = parseInt(get(csvRecord, "year"));
+                    String title = get(csvRecord, "title");
+                    String producersNames = get(csvRecord, "producers");
+                    String studiosNames = get(csvRecord, "studios");
+                    boolean winner = parseWinner(get(csvRecord, "winner"));
+                    if (releaseYear == null || isBlank(title) || isBlank(producersNames)) return null;
+                    List<String> producers = Arrays.stream(producersNames.split(",| and ")).map(String::trim).toList();
+                    List<String> studio = isBlank(studiosNames) ? List.of() :
+                            Arrays.stream(studiosNames.split(",| and ")).map(String::trim).toList();
+                    return new MovieCsvSourceDTO(
+                            null, releaseYear, title, studio, producers, winner
+                    );
+                })
+                .filter(Objects::nonNull)
+                .toList();
     }
 
-    private static Integer parseInt(String value) {
-        try {
-            return (value == null || value.isBlank()) ? null : Integer.valueOf(value.trim());
-        } catch (NumberFormatException e) {
-            throw new FileReaderException(e.getMessage(), e.getCause());
-        }
+    private boolean isBlank(String value) {
+        return Objects.isNull(value) || value.isBlank();
     }
 
-    private static boolean parseWinner(String value) {
-        return Objects.nonNull(value) && value.trim().toLowerCase().contains("y");
-    }
 }

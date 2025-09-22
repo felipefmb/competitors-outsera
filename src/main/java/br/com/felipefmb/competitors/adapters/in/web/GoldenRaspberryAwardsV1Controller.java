@@ -1,9 +1,7 @@
 package br.com.felipefmb.competitors.adapters.in.web;
 
 import br.com.felipefmb.competitors.adapters.in.web.mapper.DataMapper;
-import br.com.felipefmb.competitors.adapters.in.web.mapper.ProducerInfoMapper;
 import br.com.felipefmb.competitors.adapters.in.web.response.Response;
-import br.com.felipefmb.competitors.application.usecase.ProducersUseCase;
 import br.com.felipefmb.competitors.application.usecase.MovieUseCase;
 import br.com.felipefmb.competitors.domain.Log;
 import br.com.felipefmb.competitors.domain.exceptions.GoldenRaspberryAwardsException;
@@ -28,11 +26,8 @@ public class GoldenRaspberryAwardsV1Controller {
 
     private final MovieUseCase movieUseCase;
 
-    private final ProducersUseCase producersUseCase;
-
-    public GoldenRaspberryAwardsV1Controller(MovieUseCase movieUseCase, ProducersUseCase producersUseCase) {
+    public GoldenRaspberryAwardsV1Controller(MovieUseCase movieUseCase) {
         this.movieUseCase = movieUseCase;
-        this.producersUseCase = producersUseCase;
     }
 
     @Operation(summary = "Lista filmes", description = "Retorna uma página de filmes")
@@ -40,9 +35,9 @@ public class GoldenRaspberryAwardsV1Controller {
     @GetMapping(value = "/producers/winners", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Response> producersIntervals() {
         try {
-            var movies = movieUseCase.getMovies();
-            var producersWinners = producersUseCase.getProducersWinners(movies);
-            return ResponseEntity.ok().body(ProducerInfoMapper.toData(producersWinners));
+            var producers = movieUseCase.toString();
+            //var producersWinners = movieUseCase.getProducersWinners(movies);
+            return ResponseEntity.ok().body(DataMapper.toData(producers));
         } catch (NotFoundException e) {
             return ResponseEntity.status(204).build();
         } catch (GoldenRaspberryAwardsException e) {

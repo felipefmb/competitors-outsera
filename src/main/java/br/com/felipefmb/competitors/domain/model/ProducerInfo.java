@@ -5,5 +5,5 @@ public record ProducerInfo(
         int interval,
         int previousWin,
         int followingWin
-) {
+) implements Domain {
 }

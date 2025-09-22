@@ -1,7 +1,7 @@
 package br.com.felipefmb.competitors.domain.ports.in;
 
-import java.util.List;
+import java.util.Collection;
 
 public interface CsvSource<T> {
-    List<T> load(String csvFile);
+    Collection<T> load(String csvFile);
 }

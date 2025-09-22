@@ -5,5 +5,5 @@ import java.util.List;
 public record ProducersWinners(
         List<ProducerInfo> min,
         List<ProducerInfo> max
-) {
+) implements Domain {
 }

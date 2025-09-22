@@ -19,9 +19,7 @@ public class GoldenRaspberryAwardsV1ControllerTest {
 //
 //    @Autowired
 //    ObjectMapper mapper;
-//
-//    @MockitoBean
-//    MovieUseCase movieUseCase;
+
 
     @BeforeEach
     public void setup() {

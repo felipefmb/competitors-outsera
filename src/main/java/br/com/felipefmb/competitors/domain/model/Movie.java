@@ -1,13 +1,14 @@
 package br.com.felipefmb.competitors.domain.model;
 
 import java.math.BigInteger;
+import java.util.List;
 
 public record Movie(
         BigInteger id,
-        int year,
+        int releaseYear,
         String title,
-        Studio studio,
-        Producer producer,
+        List<Producer> producers,
+        List<Studio> studios,
         boolean winner
-) {
+) implements Domain {
 }

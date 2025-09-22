@@ -6,17 +6,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoadMoviesFromCSVUseCase {
 
-    private final MovieCsvSource csvSource;
+    private final MovieCsvSource movieCsvSource;
     private final MovieUseCase movieUseCase;
 
-    public LoadMoviesFromCSVUseCase(MovieCsvSource csvSource, MovieUseCase movieUseCase) {
-        this.csvSource = csvSource;
+    public LoadMoviesFromCSVUseCase(MovieCsvSource movieCsvSource, MovieUseCase movieUseCase) {
+        this.movieCsvSource = movieCsvSource;
         this.movieUseCase = movieUseCase;
     }
 
     public void execute() {
-        var movies = csvSource.load("movielist");
-        movieUseCase.save(movies);
+        var movies = movieCsvSource.load("movielist");
+        movieUseCase.saveWinnersMovies(movies);
     }
 
 }
