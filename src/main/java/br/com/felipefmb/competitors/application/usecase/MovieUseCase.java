@@ -1,11 +1,6 @@
 package br.com.felipefmb.competitors.application.usecase;
 
 import br.com.felipefmb.competitors.adapters.out.csv.dto.MovieCsvSourceDTO;
-import br.com.felipefmb.competitors.adapters.out.persistence.entity.MovieEntity;
-import br.com.felipefmb.competitors.adapters.out.persistence.entity.ProducerEntity;
-import br.com.felipefmb.competitors.adapters.out.persistence.entity.StudioEntity;
-import br.com.felipefmb.competitors.adapters.out.persistence.mapper.ProducerMapper;
-import br.com.felipefmb.competitors.adapters.out.persistence.repositories.MovieRepository;
 import br.com.felipefmb.competitors.application.usecase.service.MovieService;
 import br.com.felipefmb.competitors.domain.Log;
 import br.com.felipefmb.competitors.domain.model.Movie;
@@ -67,10 +62,6 @@ public class MovieUseCase {
 
         var movie = new Movie(null, movieCsvSourceDTO.releaseYear(), movieCsvSourceDTO.title(), movieProducer, movieStudio, movieCsvSourceDTO.winner());
         movieService.save(movie);
-//        var movieEntity = new MovieEntity(null, movieCsvSourceDTO.releaseYear(), movieCsvSourceDTO.title(), movieStudioEntities, movieProducerEntities, movieCsvSourceDTO.winner());
-//        movieEntity.getMovieStudios().stream().forEach(s -> studioUseCase.findById(s.getId())).collect(Collectors.toSet());
-//        movieEntity.getMovieProducers().forEach(s -> producerUseCase.findById(s.getId()));
-//        movieRepository.save(movieEntity);
     }
 
     private void generateStudios(MovieCsvSourceDTO movieCsvSourceDTO, Set<Studio> cacheStudio) {
@@ -95,51 +86,4 @@ public class MovieUseCase {
         });
     }
 
-//    private List<Movie> save(Collection<MovieCsvSourceDTO> moviesCsvDtoWinners) {
-//        Log.info("moviesCsvDtoWinners", moviesCsvDtoWinners);
-//        moviesCsvDtoWinners.forEach(csv -> {
-//            StudioEntity studioEntity = new StudioEntity();
-//            studioEntity.setName(csv.studio().get(0));
-//            List<StudioEntity> movieStudio = List.of(studioEntity);
-//
-//            ProducerEntity producerEntity = new ProducerEntity();
-//            producerEntity.setName(csv.producer().get(0));
-//            List<ProducerEntity> movieProducer = List.of(producerEntity);
-//            var movieEntity = new MovieEntity(null, csv.releaseYear(), csv.title(), movieStudio, movieProducer, csv.winner());
-//            movieService.save(movieEntity);
-//        });
-//
-//
-//        return null;
-//    }
-
-//    private List<Producer> generateProducers(MovieCsvSourceDTO movieCsvDTO, List<Producer> producersCache) {
-//        var producerCsvList = movieCsvDTO.producer();
-//        return producerCsvList.stream().map(producerName -> {
-//            Producer producerCache = producersCache.stream()
-//                    .filter(p -> p.name().equalsIgnoreCase(producerName))
-//                    .findFirst().orElse(null);
-//
-//            if (Objects.isNull(producerCache)) {
-//                producerCache = producerUseCase.save(new Producer(null, producerName, null));
-//                producersCache.add(producerCache);
-//            }
-//            return producerCache;
-//        }).toList();
-//    }
-
-//    private List<Studio> generateStudios(MovieCsvSourceDTO movieCsvDTO, List<Studio> studiosCache) {
-//        var studioCsvList = movieCsvDTO.studio();
-//        return studioCsvList.stream().map(studioName -> {
-//            Studio studioCache = studiosCache.stream()
-//                    .filter(p -> p.name().equalsIgnoreCase(studioName))
-//                    .findFirst().orElse(null);
-//
-//            if (Objects.isNull(studioCache)) {
-//                studioCache = studioUseCase.save(new Studio(null, studioName));
-//                studiosCache.add(studioCache);
-//            }
-//            return studioCache;
-//        }).toList();
-//    }
 }

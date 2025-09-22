@@ -36,7 +36,6 @@ public class GoldenRaspberryAwardsV1Controller {
     public ResponseEntity<Response> producersIntervals() {
         try {
             var producers = movieUseCase.toString();
-            //var producersWinners = movieUseCase.getProducersWinners(movies);
             return ResponseEntity.ok().body(DataMapper.toData(producers));
         } catch (NotFoundException e) {
             return ResponseEntity.status(204).build();

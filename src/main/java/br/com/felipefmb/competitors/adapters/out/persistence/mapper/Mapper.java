@@ -1,8 +1,5 @@
 package br.com.felipefmb.competitors.adapters.out.persistence.mapper;
 
-import br.com.felipefmb.competitors.adapters.out.persistence.entity.ProducerEntity;
-import br.com.felipefmb.competitors.domain.model.Producer;
-
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

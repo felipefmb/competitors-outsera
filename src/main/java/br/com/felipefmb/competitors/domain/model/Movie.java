@@ -1,7 +1,6 @@
 package br.com.felipefmb.competitors.domain.model;
 
 import java.math.BigInteger;
-import java.util.List;
 import java.util.Set;
 
 public record Movie(
