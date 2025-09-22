@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "producer")
@@ -20,12 +21,12 @@ public class ProducerEntity {
     private String name;
 
     @ManyToMany(mappedBy = "movieProducers")
-    private List<MovieEntity> movies;
+    private Set<MovieEntity> movies;
 
     public ProducerEntity() {
     }
 
-    public ProducerEntity(BigInteger id, String name, List<MovieEntity> movies) {
+    public ProducerEntity(BigInteger id, String name, Set<MovieEntity> movies) {
         this.id = id;
         this.name = name;
         this.movies = movies;
@@ -49,11 +50,11 @@ public class ProducerEntity {
         return this;
     }
 
-    public List<MovieEntity> getMovies() {
+    public Set<MovieEntity> getMovies() {
         return movies;
     }
 
-    public ProducerEntity setMovies(List<MovieEntity> movies) {
+    public ProducerEntity setMovies(Set<MovieEntity> movies) {
         this.movies = movies;
         return this;
     }

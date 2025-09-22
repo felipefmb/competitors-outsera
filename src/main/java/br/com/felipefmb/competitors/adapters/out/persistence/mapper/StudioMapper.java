@@ -6,12 +6,20 @@ import br.com.felipefmb.competitors.domain.model.Studio;
 public class StudioMapper implements Mapper<Studio, StudioEntity> {
 
     public Studio toDomain(StudioEntity entity) {
-        return null;
+        return new Studio(
+                entity.getId(),
+                entity.getName(),
+                new MovieMapper().toDomains(entity.getMovies())
+        );
     }
 
     @Override
     public StudioEntity toEntity(Studio domain) {
-        return null;
+        return new StudioEntity(
+                domain.id(),
+                domain.name(),
+                new MovieMapper().toEntities(domain.movies())
+        );
     }
 
 

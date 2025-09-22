@@ -13,6 +13,13 @@ public class MovieMapper implements Mapper<Movie, MovieEntity> {
 
     @Override
     public MovieEntity toEntity(Movie domain) {
-        return null;
+        return new MovieEntity(
+                domain.id(),
+                domain.releaseYear(),
+                domain.title(),
+                new StudioMapper().toEntities(domain.studios()),
+                new ProducerMapper().toEntities(domain.producers()),
+                domain.winner()
+        );
     }
 }

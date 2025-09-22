@@ -7,6 +7,7 @@ import br.com.felipefmb.competitors.domain.model.Producer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ProducerService {
@@ -19,10 +20,10 @@ public class ProducerService {
         this.mapper = new ProducerMapper();
     }
 
-    public List<Producer> save(List<Producer> producers) {
-        List<ProducerEntity> entities = mapper.toEntities(producers);
+    public Set<Producer> save(Set<Producer> producers) {
+        Set<ProducerEntity> entities = mapper.toEntities(producers);
         repository.saveAll(entities);
-        return mapper.toDomain(entities);
+        return mapper.toDomains(entities);
     }
 
     public Producer save(Producer producer) {

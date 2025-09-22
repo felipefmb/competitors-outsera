@@ -22,23 +22,6 @@ public class StudioUseCase {
         this.service = service;
     }
 
-    public List<Studio> save(Collection<MovieCsvSourceDTO> movies) {
-        var studios = movies.stream()
-                .collect(Collectors.groupingBy(MovieCsvSourceDTO::studio))
-                .entrySet()
-                .stream()
-                .flatMap(x -> Stream.of(x.getKey()))
-                .flatMap(Collection::stream)
-                .filter(Objects::nonNull)
-                .filter(x -> !x.isBlank())
-                .map(StringUtils::trim)
-                .distinct()
-                .map(name -> new Studio(null, name))
-                .toList();
-
-        return service.save(studios);
-    }
-
     public Studio save(Studio studio) {
         return service.save(studio);
     }

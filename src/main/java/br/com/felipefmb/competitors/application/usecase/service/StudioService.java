@@ -22,7 +22,7 @@ public class StudioService {
     public List<Studio> save(List<Studio> studios) {
         List<StudioEntity> entities = mapper.toEntities(studios);
         repository.saveAll(entities);
-        return mapper.toDomain(entities);
+        return mapper.toDomains(entities);
     }
 
     public Studio save(Studio studio) {

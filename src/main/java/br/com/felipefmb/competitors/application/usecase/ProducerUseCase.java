@@ -21,7 +21,7 @@ public class ProducerUseCase {
         this.producerService = producerService;
     }
 
-    public List<Producer> save(Collection<MovieCsvSourceDTO> movies) {
+    public Set<Producer> save(Collection<MovieCsvSourceDTO> movies) {
         var producers = movies.stream()
                 .collect(Collectors.groupingBy(MovieCsvSourceDTO::producer))
                 .entrySet()
@@ -33,7 +33,7 @@ public class ProducerUseCase {
                 .map(StringUtils::trim)
                 .distinct()
                 .map(name -> new Producer(null, name, null))
-                .toList();
+                .collect(Collectors.toSet());
         return producerService.save(producers);
     }
 

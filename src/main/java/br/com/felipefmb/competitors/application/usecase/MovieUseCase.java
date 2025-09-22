@@ -4,11 +4,9 @@ import br.com.felipefmb.competitors.adapters.out.csv.dto.MovieCsvSourceDTO;
 import br.com.felipefmb.competitors.adapters.out.persistence.entity.MovieEntity;
 import br.com.felipefmb.competitors.adapters.out.persistence.entity.ProducerEntity;
 import br.com.felipefmb.competitors.adapters.out.persistence.entity.StudioEntity;
+import br.com.felipefmb.competitors.adapters.out.persistence.mapper.ProducerMapper;
 import br.com.felipefmb.competitors.adapters.out.persistence.repositories.MovieRepository;
-import br.com.felipefmb.competitors.adapters.out.persistence.repositories.ProducerRepository;
-import br.com.felipefmb.competitors.adapters.out.persistence.repositories.StudioRepository;
 import br.com.felipefmb.competitors.domain.Log;
-import br.com.felipefmb.competitors.domain.model.Movie;
 import br.com.felipefmb.competitors.domain.model.Producer;
 import br.com.felipefmb.competitors.domain.model.Studio;
 import jakarta.transaction.Transactional;
@@ -22,54 +20,69 @@ import java.util.stream.Collectors;
 public class MovieUseCase {
 
     private final MovieRepository movieRepository;
-    private final StudioRepository studioRepository;
-    private final ProducerRepository producerRepository;
+    private final StudioUseCase studioUseCase;
+    private final ProducerUseCase producerUseCase;
 
-    public MovieUseCase(MovieRepository movieRepository, StudioRepository studioRepository, ProducerRepository producerRepository) {
+    public MovieUseCase(MovieRepository movieRepository, StudioUseCase studioUseCase, ProducerUseCase producerUseCase) {
         this.movieRepository = movieRepository;
-        this.studioRepository = studioRepository;
-        this.producerRepository = producerRepository;
+        this.studioUseCase = studioUseCase;
+        this.producerUseCase = producerUseCase;
     }
 
 
     @Transactional
-    public List<Movie> saveWinnersMovies(Collection<MovieCsvSourceDTO> moviesCsvDto) {
-        Collection<MovieCsvSourceDTO> moviesCsvDtoWinners = moviesCsvDto.stream()
-                .filter(MovieCsvSourceDTO::winner)
-                .toList();
-        List<Movie> movies = save(moviesCsvDtoWinners);
-        return movies;
+    public void saveWinnersMovies(Collection<MovieCsvSourceDTO> moviesCsvDto) {
+        Collection<MovieCsvSourceDTO> moviesCsvDtoWinners = filteringByWinners(moviesCsvDto);
+        save(moviesCsvDtoWinners);
     }
 
-    private List<Movie> save(Collection<MovieCsvSourceDTO> moviesCsvDtoWinners) {
+    private Collection<MovieCsvSourceDTO> filteringByWinners(Collection<MovieCsvSourceDTO> moviesCsvDto) {
+        return moviesCsvDto.stream()
+                .filter(MovieCsvSourceDTO::winner)
+                .toList();
+    }
+
+    @Transactional(Transactional.TxType.MANDATORY)
+    private void save(Collection<MovieCsvSourceDTO> moviesCsvDtoWinners) {
         Log.info("moviesCsvDtoWinners", moviesCsvDtoWinners);
-        List<ProducerEntity> cacheProducer = new ArrayList<>();
-        List<StudioEntity> cacheStudio = new ArrayList<>();
+        Set<Producer> cacheProducer = new HashSet<>();
+        Set<Studio> cacheStudio = new HashSet<>();
         moviesCsvDtoWinners.forEach(csv -> {
-            csv.producer().forEach(p -> {
-                ProducerEntity producerEntity = cacheProducer.stream().filter(a -> a.getName().equalsIgnoreCase(p)).findFirst().orElse(null);
-                if (Objects.isNull(producerEntity)) {
-                    producerEntity = new ProducerEntity(null, p, null);
-                }
-                producerEntity = producerRepository.save(producerEntity);
-                cacheProducer.add(producerEntity);
-            });
-
-            csv.studio().forEach(s -> {
-                StudioEntity studioEntity = cacheStudio.stream().filter(a -> a.getName().equalsIgnoreCase(s)).findFirst().orElse(null);
-                if (Objects.isNull(studioEntity)) {
-                    studioEntity = new StudioEntity(null, s, null);
-                }
-                studioEntity = studioRepository.save(studioEntity);
-                cacheStudio.add(studioEntity);
-            });
-
-            Set<StudioEntity> movieStudio = cacheStudio.stream().filter(i -> csv.studio().contains(i.getName())).collect(Collectors.toSet());
-            Set<ProducerEntity> movieProducer = cacheProducer.stream().filter(i -> csv.producer().contains(i.getName())).collect(Collectors.toSet());
-            var movieEntity = new MovieEntity(null, csv.releaseYear(), csv.title(), movieStudio, movieProducer, csv.winner());
-            movieRepository.save(movieEntity);
+            generateProducers(csv, cacheProducer);
+            generateStudios(csv, cacheStudio);
+            //generateMovie(csv, cacheProducer, cacheStudio);
         });
-        return null;
+    }
+
+    private void generateMovie(MovieCsvSourceDTO movieCsvSourceDTO, List<Producer> cacheProducer, List<StudioEntity> cacheStudio) {
+        Set<StudioEntity> movieStudio = cacheStudio.stream().filter(i -> movieCsvSourceDTO.studio().contains(i.getName())).collect(Collectors.toSet());
+        Set<Producer> movieProducer = cacheProducer.stream().filter(i -> movieCsvSourceDTO.producer().contains(i.name())).collect(Collectors.toSet());
+
+        Set<ProducerEntity> movieProducerEntities = new ProducerMapper().toEntities(movieProducer);
+        var movieEntity = new MovieEntity(null, movieCsvSourceDTO.releaseYear(), movieCsvSourceDTO.title(), movieStudio, movieProducerEntities, movieCsvSourceDTO.winner());
+        movieRepository.save(movieEntity);
+    }
+
+    private void generateStudios(MovieCsvSourceDTO movieCsvSourceDTO, Set<Studio> cacheStudio) {
+        movieCsvSourceDTO.studio().forEach(studioName -> {
+            Studio studio = cacheStudio.stream().filter(a -> a.name().equalsIgnoreCase(studioName)).findFirst().orElse(null);
+            if (Objects.isNull(studio)) {
+                studio = new Studio(null, studioName, null);
+            }
+            studio = studioUseCase.save(studio);
+            cacheStudio.add(studio);
+        });
+    }
+
+    private void generateProducers(MovieCsvSourceDTO movieCsvSourceDTO, Set<Producer> cacheProducer) {
+        movieCsvSourceDTO.producer().forEach(p -> {
+            Producer producer = cacheProducer.stream().filter(a -> a.name().equalsIgnoreCase(p)).findFirst().orElse(null);
+            if (Objects.isNull(producer)) {
+                producer = new Producer(null, p, null);
+            }
+            producer = producerUseCase.save(producer);
+            cacheProducer.add(producer);
+        });
     }
 
 //    private List<Movie> save(Collection<MovieCsvSourceDTO> moviesCsvDtoWinners) {
