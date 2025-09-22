@@ -1,36 +1,44 @@
 package br.com.felipefmb.competitors.application.usecase;
 
-import br.com.felipefmb.competitors.adapters.out.csv.dto.MovieCsvSourceDTO;
-import br.com.felipefmb.competitors.application.usecase.service.ProducerService;
+import br.com.felipefmb.competitors.adapters.out.persistence.entity.StudioEntity;
+import br.com.felipefmb.competitors.adapters.out.persistence.mapper.StudioMapper;
 import br.com.felipefmb.competitors.application.usecase.service.StudioService;
-import br.com.felipefmb.competitors.domain.model.Producer;
 import br.com.felipefmb.competitors.domain.model.Studio;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.math.BigInteger;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 
 @Component
 public class StudioUseCase {
 
     private final StudioService service;
+    private final StudioMapper mapper;
 
     public StudioUseCase(StudioService service) {
         this.service = service;
+        this.mapper = new StudioMapper();
     }
 
     public Studio save(Studio studio) {
-        return service.save(studio);
+        var entity = service.save(studio);
+        return mapper.toDomain(entity);
     }
 
     public List<Studio> findByName(String name) {
-        var studios = service.findByName(name);
-        if (Objects.isNull(studios) || studios.isEmpty()) {
+        var entities = service.findByName(name);
+        if (Objects.isNull(entities) || entities.isEmpty()) {
             return Collections.emptyList();
         }
-        return studios;
+        return mapper.toDomains(entities);
+    }
+
+    public Studio findById(BigInteger id) {
+        StudioEntity entity = service.findById(id);
+        return mapper.toDomain(entity);
     }
 }

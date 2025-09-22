@@ -26,6 +26,10 @@ public class ProducerEntity {
     public ProducerEntity() {
     }
 
+    public ProducerEntity(BigInteger id) {
+        this.id = id;
+    }
+
     public ProducerEntity(BigInteger id, String name, Set<MovieEntity> movies) {
         this.id = id;
         this.name = name;

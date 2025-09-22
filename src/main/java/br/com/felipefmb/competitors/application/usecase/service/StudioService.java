@@ -6,6 +6,7 @@ import br.com.felipefmb.competitors.adapters.out.persistence.repositories.Studio
 import br.com.felipefmb.competitors.domain.model.Studio;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @Service
@@ -19,22 +20,22 @@ public class StudioService {
         this.mapper = new StudioMapper();
     }
 
-    public List<Studio> save(List<Studio> studios) {
+    public List<StudioEntity> save(List<Studio> studios) {
         List<StudioEntity> entities = mapper.toEntities(studios);
-        repository.saveAll(entities);
-        return mapper.toDomains(entities);
+        return repository.saveAll(entities);
     }
 
-    public Studio save(Studio studio) {
+    public StudioEntity save(Studio studio) {
         StudioEntity entity = mapper.toEntity(studio);
-        entity = repository.save(entity);
-        return mapper.toDomain(entity);
+        return repository.save(entity);
     }
 
-    public List<Studio> findByName(String name) {
-        return repository.findByName(name).stream()
-                .map(mapper::toDomain)
-                .toList();
+    public List<StudioEntity> findByName(String name) {
+        return repository.findByName(name);
+    }
+
+    public StudioEntity findById(BigInteger id) {
+        return repository.findById(id).orElse(null);
     }
 }
 

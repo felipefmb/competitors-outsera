@@ -6,7 +6,9 @@ import br.com.felipefmb.competitors.adapters.out.persistence.entity.ProducerEnti
 import br.com.felipefmb.competitors.adapters.out.persistence.entity.StudioEntity;
 import br.com.felipefmb.competitors.adapters.out.persistence.mapper.ProducerMapper;
 import br.com.felipefmb.competitors.adapters.out.persistence.repositories.MovieRepository;
+import br.com.felipefmb.competitors.application.usecase.service.MovieService;
 import br.com.felipefmb.competitors.domain.Log;
+import br.com.felipefmb.competitors.domain.model.Movie;
 import br.com.felipefmb.competitors.domain.model.Producer;
 import br.com.felipefmb.competitors.domain.model.Studio;
 import jakarta.transaction.Transactional;
@@ -19,12 +21,12 @@ import java.util.stream.Collectors;
 @Component
 public class MovieUseCase {
 
-    private final MovieRepository movieRepository;
+    private final MovieService movieService;
     private final StudioUseCase studioUseCase;
     private final ProducerUseCase producerUseCase;
 
-    public MovieUseCase(MovieRepository movieRepository, StudioUseCase studioUseCase, ProducerUseCase producerUseCase) {
-        this.movieRepository = movieRepository;
+    public MovieUseCase(MovieService movieService, StudioUseCase studioUseCase, ProducerUseCase producerUseCase) {
+        this.movieService = movieService;
         this.studioUseCase = studioUseCase;
         this.producerUseCase = producerUseCase;
     }
@@ -50,17 +52,25 @@ public class MovieUseCase {
         moviesCsvDtoWinners.forEach(csv -> {
             generateProducers(csv, cacheProducer);
             generateStudios(csv, cacheStudio);
-            //generateMovie(csv, cacheProducer, cacheStudio);
+            generateMovie(csv, cacheProducer, cacheStudio);
         });
     }
 
-    private void generateMovie(MovieCsvSourceDTO movieCsvSourceDTO, List<Producer> cacheProducer, List<StudioEntity> cacheStudio) {
-        Set<StudioEntity> movieStudio = cacheStudio.stream().filter(i -> movieCsvSourceDTO.studio().contains(i.getName())).collect(Collectors.toSet());
-        Set<Producer> movieProducer = cacheProducer.stream().filter(i -> movieCsvSourceDTO.producer().contains(i.name())).collect(Collectors.toSet());
+    private void generateMovie(MovieCsvSourceDTO movieCsvSourceDTO, Set<Producer> cacheProducer, Set<Studio> cacheStudio) {
+        Set<Studio> movieStudio = cacheStudio.stream()
+                .filter(i -> movieCsvSourceDTO.studio().contains(i.name()))
+                .collect(Collectors.toSet());
 
-        Set<ProducerEntity> movieProducerEntities = new ProducerMapper().toEntities(movieProducer);
-        var movieEntity = new MovieEntity(null, movieCsvSourceDTO.releaseYear(), movieCsvSourceDTO.title(), movieStudio, movieProducerEntities, movieCsvSourceDTO.winner());
-        movieRepository.save(movieEntity);
+        Set<Producer> movieProducer = cacheProducer.stream()
+                .filter(i -> movieCsvSourceDTO.producer().contains(i.name()))
+                .collect(Collectors.toSet());
+
+        var movie = new Movie(null, movieCsvSourceDTO.releaseYear(), movieCsvSourceDTO.title(), movieProducer, movieStudio, movieCsvSourceDTO.winner());
+        movieService.save(movie);
+//        var movieEntity = new MovieEntity(null, movieCsvSourceDTO.releaseYear(), movieCsvSourceDTO.title(), movieStudioEntities, movieProducerEntities, movieCsvSourceDTO.winner());
+//        movieEntity.getMovieStudios().stream().forEach(s -> studioUseCase.findById(s.getId())).collect(Collectors.toSet());
+//        movieEntity.getMovieProducers().forEach(s -> producerUseCase.findById(s.getId()));
+//        movieRepository.save(movieEntity);
     }
 
     private void generateStudios(MovieCsvSourceDTO movieCsvSourceDTO, Set<Studio> cacheStudio) {

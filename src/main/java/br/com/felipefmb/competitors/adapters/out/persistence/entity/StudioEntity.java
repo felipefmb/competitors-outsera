@@ -25,6 +25,10 @@ public class StudioEntity {
     public StudioEntity() {
     }
 
+    public StudioEntity(BigInteger id) {
+        this.id = id;
+    }
+
     public StudioEntity(BigInteger id, String name, List<MovieEntity> movies) {
         this.id = id;
         this.name = name;
