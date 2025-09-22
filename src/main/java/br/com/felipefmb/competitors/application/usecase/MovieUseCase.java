@@ -54,15 +54,8 @@ public class MovieUseCase {
             generateMovie(csv, cacheStudio, cacheMovie);
         });
         generateProducers(moviesCsvDtoWinners, cacheMovie, cacheProducer);
-
-        findWinners();
-
     }
 
-    private void findWinners() {
-        List<Producer> producers = producerUseCase.findAll();
-        Log.info("producers", producers);
-    }
 
     private void generateStudios(MovieCsvSourceDTO movieCsvSourceDTO, Set<Studio> cacheStudio) {
         var studios = movieCsvSourceDTO.studio().stream().map(studioName ->
