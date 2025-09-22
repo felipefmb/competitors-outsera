@@ -6,7 +6,7 @@ import br.com.felipefmb.competitors.application.usecase.service.ProducerService;
 import br.com.felipefmb.competitors.domain.Log;
 import br.com.felipefmb.competitors.domain.model.Producer;
 import org.springframework.stereotype.Component;
-import java.util.*;
+import java.util.List;
 
 @Component
 public class ProducerUseCase {

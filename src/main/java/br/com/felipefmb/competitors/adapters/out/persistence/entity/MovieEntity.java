@@ -121,8 +121,6 @@ public class MovieEntity {
                 "id=" + id +
                 ", releaseYear=" + releaseYear +
                 ", title='" + title + '\'' +
-                ", movieStudios=" + movieStudios +
-                ", movieProducers=" + movieProducers +
                 ", winner=" + winner +
                 '}';
     }

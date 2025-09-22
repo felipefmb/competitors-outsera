@@ -4,6 +4,7 @@ import br.com.felipefmb.competitors.adapters.in.web.response.dto.Interval;
 import br.com.felipefmb.competitors.adapters.in.web.response.dto.Winners;
 import br.com.felipefmb.competitors.domain.model.Movie;
 import br.com.felipefmb.competitors.domain.model.Producer;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class WinnerUserCase {
         this.producerUseCase = producerUseCase;
     }
 
+    @Transactional
     public Winners findWinners() {
         List<Producer> producers = producerUseCase.findAll();
         List<Interval> intervals = getIntervals(producers);
@@ -41,7 +43,7 @@ public class WinnerUserCase {
         return intervals;
     }
 
-    public Winners getWinners(List<Interval> intervals) {
+    private Winners getWinners(List<Interval> intervals) {
         intervals.sort(Comparator.comparingInt(Interval::interval));
 
         List<Integer> minIntervals = intervals.stream().limit(2).map(Interval::interval).toList();

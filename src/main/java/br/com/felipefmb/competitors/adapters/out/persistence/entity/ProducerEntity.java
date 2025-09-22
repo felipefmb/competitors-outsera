@@ -86,7 +86,6 @@ public class ProducerEntity {
         return "ProducerEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", movies=" + movies +
                 '}';
     }
 }

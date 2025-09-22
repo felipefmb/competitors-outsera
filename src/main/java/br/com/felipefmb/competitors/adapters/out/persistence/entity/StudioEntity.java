@@ -80,7 +80,6 @@ public class StudioEntity {
         return "StudioEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", movies=" + movies +
                 '}';
     }
 }
