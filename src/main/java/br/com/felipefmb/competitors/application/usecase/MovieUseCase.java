@@ -45,7 +45,6 @@ public class MovieUseCase {
 
     @Transactional
     private void save(Collection<MovieCsvSourceDTO> moviesCsvDtoWinners) {
-        Log.info("moviesCsvDtoWinners", moviesCsvDtoWinners);
         Set<Producer> cacheProducer = new HashSet<>();
         Set<Studio> cacheStudio = new HashSet<>();
         Set<Movie> cacheMovie = new HashSet<>();
