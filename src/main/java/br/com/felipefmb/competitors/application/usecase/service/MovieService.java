@@ -6,6 +6,7 @@ import br.com.felipefmb.competitors.adapters.out.persistence.repositories.MovieR
 import br.com.felipefmb.competitors.domain.model.Movie;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,5 +29,9 @@ public class MovieService {
         entity.setMovieStudios(entity.getMovieStudios().stream().map(e -> studioService.findById(e.getId())).collect(Collectors.toSet()));
         entity.setMovieProducers(entity.getMovieProducers().stream().map(e -> producerService.findById(e.getId())).collect(Collectors.toSet()));
         return movieRepository.save(entity);
+    }
+
+    public List<MovieEntity> findAll() {
+        return movieRepository.findAll();
     }
 }

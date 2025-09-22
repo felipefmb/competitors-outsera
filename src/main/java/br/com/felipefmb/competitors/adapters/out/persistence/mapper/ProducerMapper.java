@@ -9,8 +9,7 @@ public class ProducerMapper implements Mapper<Producer, ProducerEntity> {
     public Producer toDomain(ProducerEntity entity) {
         return new Producer(
                 entity.getId(),
-                entity.getName(),
-                new MovieMapper().toDomains(entity.getMovies())
+                entity.getName()
         );
     }
 
@@ -19,7 +18,7 @@ public class ProducerMapper implements Mapper<Producer, ProducerEntity> {
         return new ProducerEntity(
                 domain.id(),
                 domain.name(),
-                new MovieMapper().toEntities(domain.movies())
+                null
         );
     }
 

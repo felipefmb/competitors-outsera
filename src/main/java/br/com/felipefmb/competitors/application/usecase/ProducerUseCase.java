@@ -4,6 +4,7 @@ import br.com.felipefmb.competitors.adapters.out.csv.dto.MovieCsvSourceDTO;
 import br.com.felipefmb.competitors.adapters.out.persistence.entity.ProducerEntity;
 import br.com.felipefmb.competitors.adapters.out.persistence.mapper.ProducerMapper;
 import br.com.felipefmb.competitors.application.usecase.service.ProducerService;
+import br.com.felipefmb.competitors.domain.Log;
 import br.com.felipefmb.competitors.domain.exceptions.ProducerException;
 import br.com.felipefmb.competitors.domain.model.Producer;
 import org.apache.commons.lang3.StringUtils;
@@ -38,7 +39,7 @@ public class ProducerUseCase {
                 .filter(x -> !x.isBlank())
                 .map(StringUtils::trim)
                 .distinct()
-                .map(name -> new Producer(null, name, null))
+                .map(producerName -> new Producer(null, producerName))
                 .collect(Collectors.toSet());
         var producerEntity = producerService.save(producers);
         if (Objects.isNull(producerEntity) || producerEntity.isEmpty()) {
@@ -62,6 +63,13 @@ public class ProducerUseCase {
 
     public Producer findById(BigInteger id) {
         ProducerEntity entity = producerService.findById(id);
-        return new ProducerMapper().toDomain(entity);
+        return mapper.toDomain(entity);
+    }
+
+    public List<Producer> findAll() {
+        Log.info("Finding producers");
+        List<ProducerEntity> producers = producerService.findAll();
+        Log.info("Finding producers", producers);
+        return mapper.toDomains(producers);
     }
 }

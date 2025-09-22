@@ -40,4 +40,8 @@ public class ProducerService {
         Optional<ProducerEntity> entity = repository.findById(id);
         return entity.orElse(null);
     }
+
+    public List<ProducerEntity> findAll() {
+        return repository.findAll();
+    }
 }

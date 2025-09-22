@@ -1,6 +1,7 @@
 package br.com.felipefmb.competitors.application.usecase;
 
 import br.com.felipefmb.competitors.adapters.out.csv.dto.MovieCsvSourceDTO;
+import br.com.felipefmb.competitors.adapters.out.persistence.entity.MovieEntity;
 import br.com.felipefmb.competitors.application.usecase.service.MovieService;
 import br.com.felipefmb.competitors.domain.Log;
 import br.com.felipefmb.competitors.domain.model.Movie;
@@ -39,7 +40,7 @@ public class MovieUseCase {
                 .toList();
     }
 
-    @Transactional(Transactional.TxType.MANDATORY)
+    @Transactional
     private void save(Collection<MovieCsvSourceDTO> moviesCsvDtoWinners) {
         Log.info("moviesCsvDtoWinners", moviesCsvDtoWinners);
         Set<Producer> cacheProducer = new HashSet<>();
@@ -49,6 +50,10 @@ public class MovieUseCase {
             generateStudios(csv, cacheStudio);
             generateMovie(csv, cacheProducer, cacheStudio);
         });
+
+        List<MovieEntity> moviesEntities = movieService.findAll();
+        Log.info("movies", moviesEntities);
+
     }
 
     private void generateMovie(MovieCsvSourceDTO movieCsvSourceDTO, Set<Producer> cacheProducer, Set<Studio> cacheStudio) {
@@ -68,7 +73,7 @@ public class MovieUseCase {
         movieCsvSourceDTO.studio().forEach(studioName -> {
             Studio studio = cacheStudio.stream().filter(a -> a.name().equalsIgnoreCase(studioName)).findFirst().orElse(null);
             if (Objects.isNull(studio)) {
-                studio = new Studio(null, studioName, null);
+                studio = new Studio(null, studioName);
             }
             studio = studioUseCase.save(studio);
             cacheStudio.add(studio);
@@ -76,10 +81,10 @@ public class MovieUseCase {
     }
 
     private void generateProducers(MovieCsvSourceDTO movieCsvSourceDTO, Set<Producer> cacheProducer) {
-        movieCsvSourceDTO.producer().forEach(p -> {
-            Producer producer = cacheProducer.stream().filter(a -> a.name().equalsIgnoreCase(p)).findFirst().orElse(null);
+        movieCsvSourceDTO.producer().forEach(producerName -> {
+            Producer producer = cacheProducer.stream().filter(a -> a.name().equalsIgnoreCase(producerName)).findFirst().orElse(null);
             if (Objects.isNull(producer)) {
-                producer = new Producer(null, p, null);
+                producer = new Producer(null, producerName);
             }
             producer = producerUseCase.save(producer);
             cacheProducer.add(producer);

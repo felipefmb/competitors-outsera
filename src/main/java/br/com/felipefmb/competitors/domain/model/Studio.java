@@ -1,11 +1,9 @@
 package br.com.felipefmb.competitors.domain.model;
 
 import java.math.BigInteger;
-import java.util.List;
 
 public record Studio(
         BigInteger id,
-        String name,
-        List<Movie> movies
+        String name
 ) implements Domain {
 }

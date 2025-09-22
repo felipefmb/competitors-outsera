@@ -8,8 +8,7 @@ public class StudioMapper implements Mapper<Studio, StudioEntity> {
     public Studio toDomain(StudioEntity entity) {
         return new Studio(
                 entity.getId(),
-                entity.getName(),
-                new MovieMapper().toDomains(entity.getMovies())
+                entity.getName()
         );
     }
 
@@ -18,9 +17,8 @@ public class StudioMapper implements Mapper<Studio, StudioEntity> {
         return new StudioEntity(
                 domain.id(),
                 domain.name(),
-                new MovieMapper().toEntities(domain.movies())
+                null
         );
     }
-
 
 }

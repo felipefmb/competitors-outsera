@@ -5,6 +5,13 @@ import br.com.felipefmb.competitors.domain.model.Movie;
 
 public class MovieMapper implements Mapper<Movie, MovieEntity> {
 
+    private final StudioMapper studioMapper;
+    private final ProducerMapper producerMapper;
+
+    public MovieMapper() {
+        this.studioMapper = new StudioMapper();
+        this.producerMapper = new ProducerMapper();
+    }
 
     @Override
     public Movie toDomain(MovieEntity entity) {
@@ -17,8 +24,8 @@ public class MovieMapper implements Mapper<Movie, MovieEntity> {
                 domain.id(),
                 domain.releaseYear(),
                 domain.title(),
-                new StudioMapper().toEntities(domain.studios()),
-                new ProducerMapper().toEntities(domain.producers()),
+                studioMapper.toEntities(domain.studios()),
+                producerMapper.toEntities(domain.producers()),
                 domain.winner()
         );
     }
