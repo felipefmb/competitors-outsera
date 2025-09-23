@@ -17,6 +17,6 @@ public class StartupRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        loadMoviesFromCSVUseCase.execute();
+        loadMoviesFromCSVUseCase.execute("movielist");
     }
 }

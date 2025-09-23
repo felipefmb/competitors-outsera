@@ -14,8 +14,8 @@ public class LoadMoviesFromCSVUseCase {
         this.movieUseCase = movieUseCase;
     }
 
-    public void execute() {
-        var movies = movieCsvSource.load("movielist");
+    public void execute(String fileName) {
+        var movies = movieCsvSource.load(fileName);
         movieUseCase.saveWinnersMovies(movies);
     }
 

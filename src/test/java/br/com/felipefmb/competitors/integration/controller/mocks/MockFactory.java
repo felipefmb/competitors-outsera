@@ -8,11 +8,23 @@ import br.com.felipefmb.competitors.domain.model.Producer;
 import br.com.felipefmb.competitors.domain.model.Studio;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.List;
 import java.util.Set;
 
 public class MockFactory {
+
+    public static class Numbers {
+        public static final Integer ZERO = 0;
+        public static final Integer ONE = 1;
+        public static final Integer TWO = 2;
+        public static final Integer THREE = 3;
+        public static final Integer FOUR = 4;
+        public static final Integer FIVE = 5;
+        public static final Integer SIX = 6;
+        public static final Integer SEVEN = 7;
+        public static final Integer EIGHT = 8;
+        public static final Integer NINE = 9;
+    }
 
     private static final Integer LIMIT_RANDON_ID = 10;
     public static final String NAME_PRODUCER = "PRODUCER_%s";
@@ -21,34 +33,27 @@ public class MockFactory {
     public static final Boolean WINNER = Boolean.TRUE;
     public static final Boolean LOOSER = Boolean.FALSE;
 
-
-    public static Producer createProducer() {
-        BigInteger id = BigInteger.valueOf(new Random().nextInt(LIMIT_RANDON_ID));
+    public static Producer createProducer(BigInteger id) {
         return new Producer(id, String.format(NAME_PRODUCER, id), Set.of());
     }
 
-    public static Movie createMovie(int releaseYear) {
-        BigInteger id = BigInteger.valueOf(new Random().nextInt(LIMIT_RANDON_ID));
-        return new Movie(id, releaseYear, String.format(TITLE_MOVIE, id), Set.of(createStudio()), WINNER);
+    public static Movie createMovie(BigInteger id, int releaseYear) {
+        return new Movie(id, releaseYear, String.format(TITLE_MOVIE, id), Set.of(), WINNER);
     }
 
-    public static Studio createStudio() {
-        BigInteger id = BigInteger.valueOf(new Random().nextInt(LIMIT_RANDON_ID));
+    public static Studio createStudio(BigInteger id) {
         return new Studio(id, String.format(NAME_STUDIO, id));
     }
 
-    public static ProducerEntity createProducerEntity() {
-        BigInteger id = BigInteger.valueOf(new Random().nextInt(LIMIT_RANDON_ID));
+    public static ProducerEntity createProducerEntity(BigInteger id) {
         return new ProducerEntity(id, String.format(NAME_PRODUCER, id), Set.of());
     }
 
-    public static MovieEntity createMovieEntity(Integer releaseYear) {
-        BigInteger id = BigInteger.valueOf(new Random().nextInt(LIMIT_RANDON_ID));
-        return new MovieEntity(id, releaseYear, String.format(TITLE_MOVIE, id), Set.of(createStudioEntity()), Set.of(createProducerEntity()), WINNER);
+    public static MovieEntity createMovieEntity(BigInteger id, Integer releaseYear) {
+        return new MovieEntity(id, releaseYear, String.format(TITLE_MOVIE, id), Set.of(), Set.of(), WINNER);
     }
 
-    public static StudioEntity createStudioEntity() {
-        BigInteger id = BigInteger.valueOf(new Random().nextInt(LIMIT_RANDON_ID));
-        return new StudioEntity(id, String.format(NAME_STUDIO, id), new ArrayList<>());
+    public static StudioEntity createStudioEntity(BigInteger id) {
+        return new StudioEntity(id, String.format(NAME_STUDIO, id), List.of());
     }
 }

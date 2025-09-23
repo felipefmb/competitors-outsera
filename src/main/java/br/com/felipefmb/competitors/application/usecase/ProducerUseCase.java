@@ -6,6 +6,8 @@ import br.com.felipefmb.competitors.application.usecase.service.ProducerService;
 import br.com.felipefmb.competitors.domain.Log;
 import br.com.felipefmb.competitors.domain.model.Producer;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -27,7 +29,9 @@ public class ProducerUseCase {
 
     public List<Producer> findAll() {
         Log.info("Finding producers");
-        List<ProducerEntity> producers = producerService.findAll();
+        List<ProducerEntity> producers = new ArrayList<>(producerService.findAll());
+        producers.removeIf(p -> p.getMovies().size() <= 1);
+        if (producers.isEmpty()) return List.of();
         Log.info("Finding producers", producers);
         return mapper.toDomains(producers);
     }
