@@ -2,10 +2,11 @@ package br.com.felipefmb.competitors.application.usecase;
 
 import br.com.felipefmb.competitors.adapters.in.web.response.dto.Interval;
 import br.com.felipefmb.competitors.adapters.in.web.response.dto.Winners;
+import br.com.felipefmb.competitors.domain.exceptions.NotFoundException;
 import br.com.felipefmb.competitors.domain.model.Movie;
 import br.com.felipefmb.competitors.domain.model.Producer;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -21,9 +22,12 @@ public class WinnerUserCase {
         this.producerUseCase = producerUseCase;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Winners findWinners() {
         List<Producer> producers = producerUseCase.findAll();
+        if (producers.isEmpty()) {
+            throw new NotFoundException("No records found");
+        }
         List<Interval> intervals = getIntervals(producers);
         return getWinners(intervals);
     }
