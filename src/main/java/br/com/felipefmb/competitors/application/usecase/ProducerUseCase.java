@@ -32,7 +32,7 @@ public class ProducerUseCase {
         List<ProducerEntity> producers = new ArrayList<>(producerService.findAll());
         producers.removeIf(p -> p.getMovies().size() <= 1);
         if (producers.isEmpty()) return List.of();
-        Log.info("Finding producers", producers);
+        Log.info("Producers founded");
         return mapper.toDomains(producers);
     }
 }

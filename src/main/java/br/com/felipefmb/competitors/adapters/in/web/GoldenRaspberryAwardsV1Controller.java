@@ -1,7 +1,9 @@
 package br.com.felipefmb.competitors.adapters.in.web;
 
 import br.com.felipefmb.competitors.adapters.in.web.mapper.DataMapper;
+import br.com.felipefmb.competitors.adapters.in.web.response.DataResponse;
 import br.com.felipefmb.competitors.adapters.in.web.response.Response;
+import br.com.felipefmb.competitors.adapters.in.web.response.dto.Winners;
 import br.com.felipefmb.competitors.application.usecase.WinnerUserCase;
 import br.com.felipefmb.competitors.domain.Log;
 import br.com.felipefmb.competitors.domain.exceptions.GoldenRaspberryAwardsException;
@@ -19,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@Tag(name = "Movies", description = "Operações com filmes")
+@Tag(name = "Golden Raspberry Awards", description = "Serviço que retorna as informações do prêmio Golden Raspberry Awards concedido as piores produções cinematográficas")
 @RestController
 @RequestMapping("/v1/golden-raspberry-awards")
 public class GoldenRaspberryAwardsV1Controller {
@@ -30,8 +32,12 @@ public class GoldenRaspberryAwardsV1Controller {
         this.winnerUserCase = winnerUserCase;
     }
 
-    @Operation(summary = "Lista filmes", description = "Retorna uma página de filmes")
-    @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Movie.class)))
+    @Operation(
+            summary = "Consulta dos vencedores com menor e maior intervalo de recebimento do prêmio",
+            description = "Retorna os vencedores com menor e maior intervalo de recebimento do prêmio")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Winners.class)))
+    @ApiResponse(responseCode = "204", description = "Not Found", content = @Content(mediaType = "application/json"))
+    @ApiResponse(responseCode = "400", description = "Error", content = @Content(mediaType = "application/json", schema = @Schema(implementation = DataResponse.class)))
     @GetMapping(value = "/producers/winners", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Response> producersIntervals() {
         try {
