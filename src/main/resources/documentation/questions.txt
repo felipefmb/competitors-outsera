@@ -1,0 +1,48 @@
+1. Obter o produtor com maior intervalo entre dois prêmios consecutivos, e o que obteve dois
+        prêmios mais rápido, seguindo a especificação de formato definida na página 2.
+Aqui pede o produtor com maior intervalo entre dois prêmios consecutivos... o que entendi aqui é que tenho que retornar um produtor que teve dois prêmios consecutivos mas não entendi a questão do intervalo pq se são dois prêmios consecutivos, como pode ter um "maior intervalo"? Entã não entendi o que seria o intervalo.
+R- Neste caso a palavra "consecutivos" se refere ao conjunto de prêmios de cada produtor. Por exemplo, se o produtor foi premiado mais de 2 vezes deve-se considerar o intervalo entre cada vitória e a próxima, não somente entre a primeira e a última;
+
+2. Também pede o que teve dois prêmios mais rápido: Aqui entendi que tenho que analisar os anos em que foram premiados e tenho que pegar os dois em que o intervalo entre o ano ano inicial e o ano final é menor, seria isso mesmo?
+R- Deve-se considerar o maior e o menor intervalo entre todos os intervalos calculados (e não somente primeiro e último, como mencionado acima), e listar os produtores de acordo;
+
+3. No payload disponibilizado na página 2, como deve ser preenchido o array min e como deve ser preenchido o array max?  Pergunto, pois, não entendi onde devo colocar o produtor com maior intervalo entre dois prêmios consecutivos e os dois produtores com menor intervalo. Pela lógica, entendo que o item 1 vai no max e o item 2 vai no min, mas poderia confirmar, por gentileza? Nesse payload também não entendi como devo preencher o campo interval, tanto para o max, como para o min
+R- O campo "min" deve conter as ocorrências do menor intervalo, e o campo "max" as do maior intervalo. O campo "interval" se refere ao intervalo em si. Por exemplo, se um produtor for vencedor em 2025 e depois em 2027, interval = 2;
+
+4. Para esse projeto, devo projetar ele como uma aplicação que suporta uma carga considerável? Ou devo focar mais na lógica, independente da carga? É que uma aplicação que suporta uma carga considerável tem implementação diferente de uma aplicação que recebe um pedido e retorna uma resposta
+R- Não há necessidade de de uma arquitetura excessivamente robusta em termos de recursos da aplicação, mas espera-se que a lógica e as decisões sejam eficientes;
+
+5. Questões como segurança da aplicação, por exemplo, autenticação por token jwt devem ser consideradas?
+R- A aplicação não deve possuir segurança ou autenticação, o foco é somente na API;
+
+6. A parte de monitoramento e observabilidade da aplicação, como por exemplo, criação de dashboards e exportar logs para uma ferramenta externa devem ser considerados para acompanhamento  também devem ser criados? No documento informa que a aplicação deve rodar sem nenhuma instalação externa, no entanto, mesmo sendo uma instalação externa, a aplicação roda sem essa parte e mesmo sendo uma ferramenta externa é possível subir junto com a aplicação em uma imagem docker.
+R- Monitoramento e observabilidade não fazem parte dos requisitos. O requisito de instalação externa significa que a aplicação deve embutir todas as suas dependências em memória sem a necessidade de executar comandos ou instalações adicionais. Mesmo que a aplicação seja iniciada via docker, por exemplo, deve possuir apenas a JRE e nada mais, e não deve subir mais de um container;
+
+7. É interessante que se crie documentos com refinamento técnico? Desenho de solução? Diagramas de sequência da aplicação?
+R- O único documento exigido nos requisitos é o README com as informações necessárias;
+
+8. Os testes de integração que são mencionados, são testes que serão realizados manualmente, por exemplo, chamando endpoints por um rest client ou são testes automatizados? Pergunto pq pede no documento que se informe como serão realizados os testes de integração. Se for via rest client tem que ver o que será utilizado para que eu disponibilize as collections e se for via automação, eles são executados no build da aplicação
+R- Os testes de integração devem ser executados via JUnit independente da aplicação;
+
+9. Crio endpoint também para cadastro de filmes ou a carga deve ser somente via arquivo CSV? Pergunto pq tem a menção de que o projeto será testado com dados diferentes, mas os dados da aplicação são alimentados apenas pelo CSV. Sendo assim, disponibilizo também um endpoint para receber o CSV e fazer o cadastro dos dados?
+R- Os testes adicionais serão feitos modificando o arquivo CSV diretamente com outros conjuntos de dados;
+
+10. É interessante que essa aplicação tenha um desenho de arquitetura com as ferramentas que serão usadas na nuvem para colocar essa aplicação no ar ou não devo focar nisso?
+R- Não, a aplicação será executada em ambiente de desenvolvimento para conferência apenas.
+
+11. o produtor com maior intervalo entre dois prêmios consecutivos
+R-Se o intervalo maior e o menor forem o mesmo, devem ser exibidos iguais nos dois campos;
+
+12. o produtor que obteve dois prêmios mais rápido
+Por exemplo,
+No caso 1, se o maior intervalo for 5 anos e dois ou mais produtores ganharam com esse mesmo intervalo, qual deve retornar?
+No caso 2, se analisando o intervalo for verificado que o menor for de 1 ano e dois ou mais produtores ganharam com um ano, qual deve retornar?
+R-Os campos “min” e “max” são arrays, portanto se houver mais de uma ocorrência do maior/menor intervalo, todos os intervalos encontrados devem ser retornados.
+
+13. No arquivo em cada linha, tem vários produtores separados por vírgula e pela palavra and, devo lidar com cada um de forma individualizada independente de qual filme trabalharam?
+R-Todos os produtores devem ser considerados individualmente.
+
+14. No arquivo tem o mesno estúdio, porém escrito de maneira diferente entre um registro e outro, o mesmo ocorre com alguns produtores...eu ajustei o arquivo, era para ter para a aplicação tratar e não mexer no arquivo? Se for para nao mexer no arquivo,  qual regra devo seguir? Tem produtores que muda somente uma letra entre um registro e outro
+R-Não existe produtor com nome “Luiz” ou “Luis” no arquivo, mas caso exista caso parecido pode-se considerar como duas pessoas diferentes;
+  Na linha 171 falta um espaço antes de “and”, porém é a única linha que isso ocorre e o filme não foi vencedor por isso não afeta o resultado;
+  O arquivo utilizado deve ser o original fornecido, sem modificações.
