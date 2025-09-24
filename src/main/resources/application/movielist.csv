@@ -1,8 +1,5 @@
 year;title;studios;producers;winner
 1980;Can't Stop the Music;Associated Film Distribution;Allan Carr;yes
-1981;Can't Stop the Music 2;Associated Film Distribution;Allan Carr;yes
-1984;Can't Stop the Music 3;Associated Film Distribution;Allan Carr;yes
-1990;Can't Stop the Music 4;Associated Film Distribution;Allan Carr;yes
 1980;Cruising;Lorimar Productions, United Artists;Jerry Weintraub;
 1980;The Formula;MGM, United Artists;Steve Shagan;
 1980;Friday the 13th;Paramount Pictures;Sean S. Cunningham;
@@ -13,23 +10,11 @@ year;title;studios;producers;winner
 1980;Windows;United Artists;Mike Lobell;
 1980;Xanadu;Universal Studios;Lawrence Gordon;
 1981;Mommie Dearest;Paramount Pictures;Frank Yablans;yes
-1989;Mommie Dearest 2;Paramount Pictures;Frank Yablans;yes
-1998;Mommie Dearest 3;Paramount Pictures;Frank Yablans;yes
-2010;Mommie Dearest 4;Paramount Pictures;Frank Yablans;yes
 1981;Endless Love;Universal Studios, PolyGram;Dyson Lovell;
 1981;Heaven's Gate;United Artists;Joann Carelli;
 1981;The Legend of the Lone Ranger;Universal Studios, Associated Film Distribution;Walter Coblenz;
-1961;Tarzan, the Ape Man;MGM, United Artists;John Derek;
-1981;Tarzan, the Ape Man 2;MGM, United Artists;John Derek;
-2001;Tarzan, the Ape Man 2;MGM, United Artists;John Derek;
-1965;Inchon 0;MGM;Mitsuharu Ishii;yes
-1982;Inchon 1;MGM;Mitsuharu Ishii;yes
-1985;Inchon 2;MGM;Mitsuharu Ishii;yes
-1991;Inchon 3;MGM;Mitsuharu Ishii;yes
-1998;Inchon 4;MGM;Mitsuharu Ishii;yes
-2015;Inchon 5;MGM;Mitsuharu Ishii;yes
-2019;Inchon 6;MGM;Mitsuharu Ishii;yes
-2025;Inchon 7;MGM;Mitsuharu Ishii;yes
+1981;Tarzan, the Ape Man;MGM, United Artists;John Derek;
+1982;Inchon;MGM;Mitsuharu Ishii;yes
 1982;Annie;Columbia Pictures;Ray Stark;
 1982;Butterfly;Analysis Film Releasing;Matt Cimber;
 1982;Megaforce;20th Century Fox;Albert S. Ruddy;
@@ -100,7 +85,7 @@ year;title;studios;producers;winner
 1995;The Scarlet Letter;Hollywood Pictures;Roland Joffé and Andrew G. Vajna;
 1995;Waterworld;Universal Studios;Kevin Costner, John Davis, Charles Gordon and Lawrence Gordon;
 1996;Striptease;Columbia Pictures, Castle Rock Entertainment;Andrew Bergman and Mike Lobell;yes
-1996;Barb Wire;PolyGram, Gramercy Pictures;Todd Moyer, Mike Richardson and Brad Wyman;
+1996;Barb Wire;PolyGram Filmed Entertainment, Gramercy Pictures;Todd Moyer, Mike Richardson and Brad Wyman;
 1996;Ed;Universal Studios;Rosalie Swedlin;
 1996;The Island of Dr. Moreau;New Line Cinema;Edward R. Pressman;
 1996;The Stupids;New Line Cinema, Savoy Pictures;Leslie Belzberg;
@@ -152,14 +137,14 @@ year;title;studios;producers;winner
 2006;Basic Instinct 2;MGM, C2 Pictures;Mario Kassar, Joel B. Michaels and Andrew G. Vajna;yes
 2006;BloodRayne;Romar Entertainment;Uwe Boll, Dan Clarke and Wolfgang Herrold;
 2006;Lady in the Water;Warner Bros.;Sam Mercer, Jose L. Rodriguez and M. Night Shyamalan;
-2006;Little Man;Columbia Pictures, Revolution Studios;Rick Alvarez, Lee Mays, Marlon Wayans and Shawn Wayans;
+2006;Little Man;Columbia Pictures, Revolution Studios;Rick Alvares, Lee Mays, Marlon Wayans and Shawn Wayans;
 2006;The Wicker Man;Warner Bros.;Nicolas Cage, Randall Emmett, Norm Golightly, Avi Lerner and Joanne Sellar;
 2007;I Know Who Killed Me;TriStar Pictures;David Grace and Frank Mancuso Jr.;
 2007;Bratz;Lionsgate;Avi Arad, Isaac Larian and Steven Paul;
 2007;Daddy Day Camp;TriStar Pictures, Revolution Studios;Matt Berenson, John Davis and Wyck Godfrey;
 2007;I Now Pronounce You Chuck & Larry;Universal Studios;Adam Sandler and Tom Shadyac;
 2007;Norbit;DreamWorks;John Davis, Eddie Murphy and Michael Tollin;
-2008;The Love Guru;Paramount Pictures;Gary Barber, Michael De Luca and Mike Myers;yes
+2008;The Love Guru;Paramount Pictures;Gary Barber, Michael DeLuca and Mike Myers;yes
 2008;Disaster Movie and Meet the Spartans;Lionsgate, 20th Century Fox;Jason Friedberg, Peter Safran and Aaron Seltzer;
 2008;The Happening;20th Century Fox;Barry Mendel, Sam Mercer and M. Night Shyamalan;
 2008;The Hottie & the Nottie;Regent Releasing;Hadeel Reda;
@@ -171,7 +156,7 @@ year;title;studios;producers;winner
 2009;Old Dogs;Walt Disney Pictures;Peter Abrams, Robert Levy and Andrew Panay;
 2010;The Last Airbender;Paramount Pictures, Nickelodeon Movies;Frank Marshall, Kathleen Kennedy, Sam Mercer and M. Night Shyamalan;yes
 2010;The Bounty Hunter;Columbia Pictures;Neal H. Moritz;
-2010;Sex and the City 2;New Line Cinema, HBO Films, Village Roadshow;Michael Patrick King, John Melfi, Sarah Jessica Parker and Darren Star;
+2010;Sex and the City 2;New Line Cinema, HBO Films, Village Roadshow Pictures;Michael Patrick King, John Melfi, Sarah Jessica Parker and Darren Star;
 2010;The Twilight Saga: Eclipse;Summit Entertainment;Wyck Godfrey and Karen Rosenfelt;
 2010;Vampires Suck;20th Century Fox;Jason Friedberg, Peter Safran and Aaron Seltzer;
 2011;Jack and Jill;Columbia Pictures;Todd Garner, Jack Giarraputo and Adam Sandler;yes
@@ -181,9 +166,9 @@ year;title;studios;producers;winner
 2011;The Twilight Saga: Breaking Dawn – Part 1;Summit Entertainment;Wyck Godfrey, Stephenie Meyer and Karen Rosenfelt;
 2012;The Twilight Saga: Breaking Dawn – Part 2;Summit Entertainment;Wyck Godfrey, Stephenie Meyer and Karen Rosenfelt;yes
 2012;Battleship;Universal Studios;Sarah Aubrey, Peter Berg, Brian Goldner, Duncan Henderson, Bennett Schneir and Scott Stuber;
-2012;The Oogieloves in the Big Balloon Adventure;Lionsgate, Romar Entertainment, Kenn Viselman Presents;Gayle Dickie, Kenn Viselman;
+2012;The Oogieloves in the Big Balloon Adventure;Lionsgate Films, Romar Entertainment, Kenn Viselman Presents;Gayle Dickie, Kenn Viselman;
 2012;That's My Boy;Columbia Pictures;Allen Covert, Jack Giarraputo, Heather Parry and Adam Sandler;
-2012;A Thousand Words;Paramount Pictures, DreamWorks;Nicolas Cage, Alain Chabat, Stephanie Danan, Norman Golightly, Brian Robbins and Sharla Sumpter Bridgett;
+2012;A Thousand Words;Paramount Pictures, DreamWorks;Nicolas Cage, Alain Chabat, Stephanie Danan, Norman Golightly, Brian Robbinsand Sharla Sumpter Bridgett;
 2013;Movie 43;Relativity Media;Peter Farrelly, Ryan Kavanaugh, John Penotti and Charles B. Wessler;yes
 2013;After Earth;Columbia Pictures;James Lassiter, Caleeb Pinkett, Jada Pinkett Smith, M. Night Shyamalan, Will Smith and Jaden Smith;
 2013;Grown Ups 2;Columbia Pictures;Jack Giarraputo and Adam Sandler;
@@ -219,6 +204,4 @@ year;title;studios;producers;winner
 2019;The Fanatic;Quiver Distribution;Daniel Grodnik, Oscar Generale, and Bill Kenwright;
 2019;The Haunting of Sharon Tate;Saban Films;Lucas Jarach, Daniel Farrands, and Eric Brenner;
 2019;A Madea Family Funeral;Lionsgate;Ozzie Areu, Will Areu, and Mark E. Swinton;
-2019;Rambo: Last Blood;Lionsgate;Avi Lerner, Kevin King Templeton, Yariv Lerner, and Les Weldon;yes
-2020;Rambo: Last Blood 2;Lionsgate;Avi Lerner, Kevin King Templeton, Yariv Lerner, and Les Weldon;yes
-2037;Rambo: Last Blood 3;Lionsgate;Avi Lerner, Kevin King Templeton, Yariv Lerner, and Les Weldon;yes
+2019;Rambo: Last Blood;Lionsgate;Avi Lerner, Kevin King Templeton, Yariv Lerner, and Les Weldon;

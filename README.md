@@ -118,8 +118,8 @@ PROFILE=<profile> docker compose up
 
 ---
 ### Verificando os resultados 
-Com a aplicação em estado de execução na máquina local, abrir o navegador de sua preferência e acessar a URL abaixo:
-- **URL:**http://localhost:8500/swagger-ui/index.html
+- Antes de executar a aplicação, alterar o arquivo que consta em: /src/main/resources/application/movielist.csv conforme desejado
+- Executar a aplicação conforme as instruções anteriores e com a aplicação em estado de execução na máquina local, abrir o navegador de sua preferência e acessar a URL: http://localhost:8500/swagger-ui/index.html
 - Localizar o endpoint [GET] /v1/golden-raspberry-awards/producers/winners
 - Clicar no botão "Try out"
 - Clicar no botão "Execute"
