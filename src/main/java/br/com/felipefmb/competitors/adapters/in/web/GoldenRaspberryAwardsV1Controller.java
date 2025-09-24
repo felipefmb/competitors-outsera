@@ -8,7 +8,6 @@ import br.com.felipefmb.competitors.application.usecase.WinnerUserCase;
 import br.com.felipefmb.competitors.domain.Log;
 import br.com.felipefmb.competitors.domain.exceptions.GoldenRaspberryAwardsException;
 import br.com.felipefmb.competitors.domain.exceptions.NotFoundException;
-import br.com.felipefmb.competitors.domain.model.Movie;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
