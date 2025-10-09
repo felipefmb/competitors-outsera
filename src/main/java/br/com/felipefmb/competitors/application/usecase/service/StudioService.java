@@ -2,7 +2,6 @@ package br.com.felipefmb.competitors.application.usecase.service;
 
 import br.com.felipefmb.competitors.adapters.out.persistence.entity.StudioEntity;
 import br.com.felipefmb.competitors.adapters.out.persistence.mapper.StudioMapper;
-import br.com.felipefmb.competitors.adapters.out.persistence.repositories.StudioRepositoryJpa;
 import br.com.felipefmb.competitors.domain.model.Studio;
 import br.com.felipefmb.competitors.domain.ports.out.StudioRepositoryPort;
 import org.springframework.stereotype.Service;

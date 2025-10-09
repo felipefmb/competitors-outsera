@@ -3,7 +3,6 @@ package br.com.felipefmb.competitors.adapters.out.persistence.entity;
 import jakarta.persistence.*;
 
 import java.math.BigInteger;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity(name = "movie")
