@@ -22,19 +22,6 @@ public class StudioEntity {
     @ManyToMany(mappedBy = "movieStudios")
     private List<MovieEntity> movies;
 
-    public StudioEntity() {
-    }
-
-    public StudioEntity(BigInteger id) {
-        this.id = id;
-    }
-
-    public StudioEntity(BigInteger id, String name, List<MovieEntity> movies) {
-        this.id = id;
-        this.name = name;
-        this.movies = movies;
-    }
-
     public BigInteger getId() {
         return id;
     }
@@ -60,26 +47,5 @@ public class StudioEntity {
     public StudioEntity setMovies(List<MovieEntity> movies) {
         this.movies = movies;
         return this;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        StudioEntity that = (StudioEntity) object;
-        return Objects.equals(getId(), that.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
-    }
-
-    @Override
-    public String toString() {
-        return "StudioEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
     }
 }

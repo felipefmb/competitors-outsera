@@ -14,11 +14,10 @@ public class StudioMapper implements Mapper<Studio, StudioEntity> {
 
     @Override
     public StudioEntity toEntity(Studio domain) {
-        return new StudioEntity(
-                domain.id(),
-                domain.name(),
-                null
-        );
+        StudioEntity entity = new StudioEntity();
+        entity.setId(domain.id());
+        entity.setName(domain.name());
+        return entity;
     }
 
 }

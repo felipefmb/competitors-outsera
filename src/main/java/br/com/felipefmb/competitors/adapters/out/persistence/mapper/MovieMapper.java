@@ -24,13 +24,12 @@ public class MovieMapper implements Mapper<Movie, MovieEntity> {
 
     @Override
     public MovieEntity toEntity(Movie domain) {
-        return new MovieEntity(
-                domain.id(),
-                domain.releaseYear(),
-                domain.title(),
-                studioMapper.toEntities(domain.studios()),
-                null,
-                domain.winner()
-        );
+        MovieEntity entity = new MovieEntity();
+        entity.setId(domain.id());
+        entity.setReleaseYear(domain.releaseYear());
+        entity.setTitle(domain.title());
+        entity.setMovieStudios(studioMapper.toEntities(domain.studios()));
+        entity.setWinner(domain.winner());
+        return entity;
     }
 }

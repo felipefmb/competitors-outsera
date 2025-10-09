@@ -20,13 +20,11 @@ public class MovieUseCase {
     private final MovieService movieService;
     private final StudioUseCase studioUseCase;
     private final ProducerUseCase producerUseCase;
-    private final MovieMapper mapper;
 
     public MovieUseCase(MovieService movieService, StudioUseCase studioUseCase, ProducerUseCase producerUseCase) {
         this.movieService = movieService;
         this.studioUseCase = studioUseCase;
         this.producerUseCase = producerUseCase;
-        this.mapper = new MovieMapper();
     }
 
 
@@ -77,8 +75,8 @@ public class MovieUseCase {
                         })
         ).collect(Collectors.toSet());
         Movie movie = new Movie(null, movieCsvSourceDTO.releaseYear(), movieCsvSourceDTO.title(), studios, movieCsvSourceDTO.winner());
-        MovieEntity entity = movieService.save(movie);
-        cacheMovie.add(mapper.toDomain(entity));
+        movie = movieService.save(movie);
+        cacheMovie.add(movie);
     }
 
 
@@ -97,8 +95,7 @@ public class MovieUseCase {
                                                     .filter(c -> c.title().equalsIgnoreCase(m.title()))
                                                     .findFirst()
                                                     .orElseGet(() -> {
-                                                        MovieEntity movieEntity = movieService.findByTitle(m.title());
-                                                        Movie movie = mapper.toDomain(movieEntity);
+                                                        Movie movie = findByTitle(m.title());
                                                         cacheMovie.add(movie);
                                                         return movie;
                                                     }))
@@ -113,6 +110,10 @@ public class MovieUseCase {
                                 })
                 );
         producers.forEach(producerUseCase::save);
+    }
+
+    public Movie findByTitle(String title) {
+        return movieService.findByTitle(title);
     }
 }
 

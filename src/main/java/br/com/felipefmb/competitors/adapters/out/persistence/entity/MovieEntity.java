@@ -36,18 +36,6 @@ public class MovieEntity {
     @Column(name = "winner", nullable = false)
     private boolean winner;
 
-    public MovieEntity() {
-    }
-
-    public MovieEntity(BigInteger id, Integer releaseYear, String title, Set<StudioEntity> movieStudios, Set<ProducerEntity> movieProducers, boolean winner) {
-        this.id = id;
-        this.releaseYear = releaseYear;
-        this.title = title;
-        this.movieStudios = movieStudios;
-        this.movieProducers = movieProducers;
-        this.winner = winner;
-    }
-
     public BigInteger getId() {
         return id;
     }
@@ -100,28 +88,5 @@ public class MovieEntity {
     public MovieEntity setWinner(boolean winner) {
         this.winner = winner;
         return this;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        MovieEntity that = (MovieEntity) object;
-        return Objects.equals(getId(), that.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
-    }
-
-    @Override
-    public String toString() {
-        return "MovieEntity{" +
-                "id=" + id +
-                ", releaseYear=" + releaseYear +
-                ", title='" + title + '\'' +
-                ", winner=" + winner +
-                '}';
     }
 }

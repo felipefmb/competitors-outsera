@@ -22,11 +22,11 @@ public class ProducerMapper implements Mapper<Producer, ProducerEntity> {
 
     @Override
     public ProducerEntity toEntity(Producer domain) {
-        return new ProducerEntity(
-                domain.id(),
-                domain.name(),
-                movieMapper.toEntities(domain.movies())
-        );
+        ProducerEntity entity = new ProducerEntity();
+        entity.setId(domain.id());
+        entity.setName(domain.name());
+        entity.setMovies(movieMapper.toEntities(domain.movies()));
+        return entity;
     }
 
 }

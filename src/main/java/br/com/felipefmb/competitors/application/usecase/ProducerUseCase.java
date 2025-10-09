@@ -23,8 +23,8 @@ public class ProducerUseCase {
     }
 
     public Producer save(Producer producer) {
-        ProducerEntity producerEntity = producerService.save(producer);
-        return mapper.toDomain(producerEntity);
+        return producerService.save(producer);
+
     }
 
     public List<Producer> findAll() {

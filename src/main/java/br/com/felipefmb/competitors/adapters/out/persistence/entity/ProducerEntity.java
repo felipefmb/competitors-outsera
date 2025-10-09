@@ -1,9 +1,7 @@
 package br.com.felipefmb.competitors.adapters.out.persistence.entity;
 
 import jakarta.persistence.*;
-
 import java.math.BigInteger;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -27,19 +25,6 @@ public class ProducerEntity {
             inverseJoinColumns = @JoinColumn(name = "movie_id")
     )
     private Set<MovieEntity> movies;
-
-    public ProducerEntity() {
-    }
-
-    public ProducerEntity(BigInteger id) {
-        this.id = id;
-    }
-
-    public ProducerEntity(BigInteger id, String name, Set<MovieEntity> movies) {
-        this.id = id;
-        this.name = name;
-        this.movies = movies;
-    }
 
     public BigInteger getId() {
         return id;
@@ -68,24 +53,4 @@ public class ProducerEntity {
         return this;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        ProducerEntity that = (ProducerEntity) object;
-        return Objects.equals(getId(), that.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
-    }
-
-    @Override
-    public String toString() {
-        return "ProducerEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }
