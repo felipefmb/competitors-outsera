@@ -6,6 +6,8 @@ import br.com.felipefmb.competitors.adapters.out.persistence.mapper.ProducerMapp
 import br.com.felipefmb.competitors.domain.model.Producer;
 import br.com.felipefmb.competitors.domain.ports.out.MovieRepositoryPort;
 import br.com.felipefmb.competitors.domain.ports.out.ProducerRepositoryPort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,6 +41,12 @@ public class ProducerService {
 
 
     public List<ProducerEntity> findAll() {
-        return repository.findAll();
+        Pageable pages = Pageable.ofSize(100);
+        Page<ProducerEntity> entities = repository.findAll(pages);
+        while (entities.hasNext()) {
+            pages = entities.nextPageable();
+            entities = repository.findAll(pages);
+        }
+        return entities.getContent();
     }
 }

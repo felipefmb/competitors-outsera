@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Component
 public class WinnerUserCase {
@@ -24,12 +23,23 @@ public class WinnerUserCase {
 
     @Transactional(readOnly = true)
     public Winners findWinners() {
-        List<Producer> producers = producerUseCase.findAll();
+        List<Producer> producers = producerUseCase.findProducersWithMultipleMovies();
         if (producers.isEmpty()) {
             throw new NotFoundException("No records found");
         }
+        return getWinners(producers);
+    }
+
+    private Winners getWinners(List<Producer> producers) {
         List<Interval> intervals = getIntervals(producers);
-        return getWinners(intervals);
+        intervals.sort(Comparator.comparingInt(Interval::interval));
+        List<Interval> min = intervals.stream()
+                .filter(i -> i.interval() == intervals.get(0).interval())
+                .toList();
+        List<Interval> max = intervals.stream()
+                .filter(i -> i.interval() == intervals.get(intervals.size() - 1).interval())
+                .toList();
+        return new Winners(min, max);
     }
 
     private List<Interval> getIntervals(List<Producer> producers) {
@@ -47,14 +57,4 @@ public class WinnerUserCase {
         return intervals;
     }
 
-    private Winners getWinners(List<Interval> intervals) {
-        intervals.sort(Comparator.comparingInt(Interval::interval));
-
-        List<Integer> minIntervals = intervals.stream().limit(2).map(Interval::interval).toList();
-        List<Integer> maxInterval = Stream.of(intervals.get(intervals.size() - 1)).map(Interval::interval).toList();
-
-        List<Interval> min = intervals.stream().filter(l -> minIntervals.contains(l.interval())).toList();
-        List<Interval> max = intervals.stream().filter(l -> maxInterval.contains(l.interval())).toList();
-        return new Winners(min, max);
-    }
 }

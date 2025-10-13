@@ -2,10 +2,10 @@ package br.com.felipefmb.competitors.adapters.out.persistence.repositories;
 
 import br.com.felipefmb.competitors.adapters.out.persistence.entity.ProducerEntity;
 import br.com.felipefmb.competitors.domain.ports.out.ProducerRepositoryPort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Repository
 public class ProducerRepository implements ProducerRepositoryPort {
@@ -23,7 +23,7 @@ public class ProducerRepository implements ProducerRepositoryPort {
     }
 
     @Override
-    public List<ProducerEntity> findAll() {
-        return producerRepositoryJpa.findAll();
+    public Page<ProducerEntity> findAll(Pageable pagination) {
+        return producerRepositoryJpa.findAll(pagination);
     }
 }

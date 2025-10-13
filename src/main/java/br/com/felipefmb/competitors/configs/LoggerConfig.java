@@ -38,13 +38,11 @@ public class LoggerConfig extends ClassicConverter {
     private static String toJsonSafe(Object v) {
         if (v == null) return "null";
         try {
-            // Strings saem com aspas; objetos viram JSON
             if (v instanceof CharSequence) {
                 return "\"" + v.toString() + "\"";
             }
             return MAPPER.writeValueAsString(v);
         } catch (Exception e) {
-            // fallback
             return "\"" + v.toString().replace("\"", "\\\"") + "\"";
         }
     }

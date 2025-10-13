@@ -27,7 +27,7 @@ public class ProducerUseCase {
 
     }
 
-    public List<Producer> findAll() {
+    public List<Producer> findProducersWithMultipleMovies() {
         Log.info("Finding producers");
         List<ProducerEntity> producers = new ArrayList<>(producerService.findAll());
         producers.removeIf(p -> p.getMovies().size() <= 1);
