@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 public class ProducerRepository implements ProducerRepositoryPort {
 
@@ -23,7 +25,23 @@ public class ProducerRepository implements ProducerRepositoryPort {
     }
 
     @Override
-    public Page<ProducerEntity> findAll(Pageable pagination) {
-        return producerRepositoryJpa.findAll(pagination);
+    public List<ProducerEntity> findAll() {
+        Pageable pages = Pageable.ofSize(100);
+        Page<ProducerEntity> entities = producerRepositoryJpa.findAll(pages);
+        while (entities.hasNext()) {
+            pages = entities.nextPageable();
+            entities = producerRepositoryJpa.findAll(pages);
+        }
+        return entities.getContent();
+    }
+
+    @Override
+    public List<ProducerEntity> findProducersWithMultipleMovies(Pageable pages) {
+        Page<ProducerEntity> entities = producerRepositoryJpa.findProducersWithMultipleMovies(pages);
+        while (entities.hasNext()) {
+            pages = entities.nextPageable();
+            entities = producerRepositoryJpa.findProducersWithMultipleMovies(pages);
+        }
+        return entities.getContent();
     }
 }

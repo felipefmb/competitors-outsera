@@ -10,12 +10,16 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.data.domain.Pageable.ofSize;
+
 @Component
 public class ProducerUseCase {
 
     private final ProducerService producerService;
 
     private final ProducerMapper mapper;
+
+    private static final int ITEMS_PAGE = 100;
 
     public ProducerUseCase(ProducerService producerService) {
         this.producerService = producerService;
@@ -29,8 +33,7 @@ public class ProducerUseCase {
 
     public List<Producer> findProducersWithMultipleMovies() {
         Log.info("Finding producers");
-        List<ProducerEntity> producers = new ArrayList<>(producerService.findAll());
-        producers.removeIf(p -> p.getMovies().size() <= 1);
+        List<ProducerEntity> producers = new ArrayList<>(producerService.findProducersWithMultipleMovies(ofSize(ITEMS_PAGE)));
         if (producers.isEmpty()) return List.of();
         Log.info("Producers founded");
         return mapper.toDomains(producers);
