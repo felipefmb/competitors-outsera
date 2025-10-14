@@ -1,4 +1,4 @@
-package br.com.felipefmb.competitors.configs;
+package br.com.felipefmb.competitors.adapters.in.web.exception;
 
 import br.com.felipefmb.competitors.adapters.in.web.mapper.DataMapper;
 import br.com.felipefmb.competitors.adapters.in.web.response.Response;
