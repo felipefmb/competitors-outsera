@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name = "studio")
 @Table(name = "studio")
@@ -19,7 +20,7 @@ public class StudioEntity {
     private String name;
 
     @ManyToMany(mappedBy = "movieStudios")
-    private List<MovieEntity> movies;
+    private Set<MovieEntity> movies;
 
     public BigInteger getId() {
         return id;
@@ -39,11 +40,11 @@ public class StudioEntity {
         return this;
     }
 
-    public List<MovieEntity> getMovies() {
+    public Set<MovieEntity> getMovies() {
         return movies;
     }
 
-    public StudioEntity setMovies(List<MovieEntity> movies) {
+    public StudioEntity setMovies(Set<MovieEntity> movies) {
         this.movies = movies;
         return this;
     }
