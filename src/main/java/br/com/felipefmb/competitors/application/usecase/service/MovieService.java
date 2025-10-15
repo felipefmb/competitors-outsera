@@ -2,29 +2,23 @@ package br.com.felipefmb.competitors.application.usecase.service;
 
 import br.com.felipefmb.competitors.adapters.out.persistence.entity.MovieEntity;
 import br.com.felipefmb.competitors.adapters.out.persistence.mapper.MovieMapper;
-import br.com.felipefmb.competitors.adapters.out.persistence.mapper.StudioMapper;
 import br.com.felipefmb.competitors.domain.model.Movie;
 import br.com.felipefmb.competitors.domain.ports.out.MovieRepositoryPort;
 import org.springframework.stereotype.Service;
-
-import java.util.stream.Collectors;
 
 @Service
 public class MovieService {
 
     private final MovieRepositoryPort movieRepositoryPort;
-    private final StudioService studioService;
     private final MovieMapper movieMapper;
 
-    public MovieService(MovieRepositoryPort movieRepositoryPort, StudioService studioService) {
+    public MovieService(MovieRepositoryPort movieRepositoryPort) {
         this.movieRepositoryPort = movieRepositoryPort;
-        this.studioService = studioService;
         this.movieMapper = new MovieMapper();
     }
 
     public Movie save(Movie movie) {
         var entity = movieMapper.toEntity(movie);
-        //entity.setMovieStudios(entity.getMovieStudios().stream().map(e -> studioService.findById(e.getId())).collect(Collectors.toSet()));
         entity = movieRepositoryPort.save(entity);
         return movieMapper.toDomain(entity);
     }
