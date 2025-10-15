@@ -1,6 +1,6 @@
 package br.com.felipefmb.competitors.integration.controller;
 
-import br.com.felipefmb.competitors.adapters.in.web.response.dto.Interval;
+import br.com.felipefmb.competitors.adapters.in.web.response.dto.WinnerInfo;
 import br.com.felipefmb.competitors.adapters.in.web.response.dto.Winners;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -40,10 +40,10 @@ class GoldenRaspberryAwardsV1ControllerTest {
         var content = mapper.readValue(response.getContentAsString(), Winners.class);
         Assertions.assertEquals(1, content.min().size());
         Assertions.assertEquals(1, content.max().size());
-        Interval minInterval = content.min().get(0);
-        Interval maxInterval = content.max().get(0);
-        Assertions.assertEquals(1, minInterval.interval());
-        Assertions.assertEquals(13, maxInterval.interval());
+        WinnerInfo minWinnerInfo = content.min().get(0);
+        WinnerInfo maxWinnerInfo = content.max().get(0);
+        Assertions.assertEquals(1, minWinnerInfo.interval());
+        Assertions.assertEquals(13, maxWinnerInfo.interval());
     }
 
 }

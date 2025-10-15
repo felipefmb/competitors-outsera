@@ -33,9 +33,9 @@ public class ProducerUseCase {
 
     public List<Producer> findProducersWithMultipleMovies() {
         Log.info("Finding producers");
-        List<ProducerEntity> producers = new ArrayList<>(producerService.findProducersWithMultipleMovies(ofSize(ITEMS_PAGE)));
+        List<Producer> producers = new ArrayList<>(producerService.findProducersWithMultipleMovies(ofSize(ITEMS_PAGE)));
         if (producers.isEmpty()) return List.of();
         Log.info("Producers founded");
-        return mapper.toDomains(producers);
+        return producers;
     }
 }

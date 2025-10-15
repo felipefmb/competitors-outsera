@@ -44,7 +44,7 @@ A aplicação permite a consulta de informações sobre produções cinematográ
 {"status":"UP"}
 ```
 
-**Endpoint:** `[GET] /v1/golden-raspberry-awards/producers/winners`
+**Endpoint:** `[GET] /v1/golden-raspberry-awards/producers/winnerInfos`
 
 ```json
 {
@@ -120,7 +120,7 @@ PROFILE=<profile> docker compose up
 ### Verificando os resultados 
 - Antes de executar a aplicação, alterar o arquivo que consta em: /src/main/resources/application/movielist.csv conforme desejado
 - Executar a aplicação conforme as instruções anteriores e com a aplicação em estado de execução na máquina local, abrir o navegador de sua preferência e acessar a URL: http://localhost:8500/swagger-ui/index.html
-- Localizar o endpoint [GET] /v1/golden-raspberry-awards/producers/winners
+- Localizar o endpoint [GET] /v1/golden-raspberry-awards/producers/winnerInfos
 - Clicar no botão "Try out"
 - Clicar no botão "Execute"
 - Verificar o resultado da execução no campo "Response body"

@@ -54,25 +54,35 @@ public class MovieUseCase {
     private void generateStudios(MovieCsvSourceDTO movieCsvSourceDTO, Set<Studio> cacheStudio) {
         var studios = movieCsvSourceDTO.studio().stream().map(studioName ->
                 cacheStudio.stream()
-                        .filter(a -> a.name().equalsIgnoreCase(studioName))
+                        .filter(a -> a.getName().equalsIgnoreCase(studioName))
                         .findFirst()
-                        .orElseGet(() -> new Studio(null, studioName))
+                        .orElseGet(() -> {
+                            Studio studio = new Studio();
+                            studio.setId(null);
+                            studio.setName(studioName);
+                            return studio;
+                        })
         ).collect(Collectors.toSet());
         studios.stream().map(studioUseCase::save).forEach(cacheStudio::add);
     }
 
     private void generateMovie(MovieCsvSourceDTO movieCsvSourceDTO, Set<Studio> cacheStudio, Set<Movie> cacheMovie) {
-        Set<Studio> studios = movieCsvSourceDTO.studio().stream().map(studio ->
+        List<Studio> studios = movieCsvSourceDTO.studio().stream().map(studio ->
                 cacheStudio.stream()
-                        .filter(x -> x.name().equalsIgnoreCase(studio))
+                        .filter(x -> x.getName().equalsIgnoreCase(studio))
                         .findFirst()
                         .orElseGet(() -> {
                             Studio foundStudio = studioUseCase.findByName(studio);
                             cacheStudio.add(foundStudio);
                             return foundStudio;
                         })
-        ).collect(Collectors.toSet());
-        Movie movie = new Movie(null, movieCsvSourceDTO.releaseYear(), movieCsvSourceDTO.title(), studios, movieCsvSourceDTO.winner());
+        ).toList();
+        Movie movie = new Movie();
+        movie.setId(null);
+        movie.setReleaseYear(movieCsvSourceDTO.releaseYear());
+        movie.setTitle(movieCsvSourceDTO.title());
+        movie.setStudios(studios);
+        movie.setWinner(movieCsvSourceDTO.winner());
         movie = movieService.save(movie);
         cacheMovie.add(movie);
     }
@@ -87,21 +97,24 @@ public class MovieUseCase {
                                 .filter(Objects::nonNull)
                                 .filter(p -> !p.isBlank())
                                 .forEach(producerName -> {
-                                    Producer producerCache = cacheProducer.stream().filter(c -> c.name().equalsIgnoreCase(producerName)).findFirst().orElse(null);
-                                    Set<Movie> movies = moviesByProducer.stream()
+                                    Producer producerCache = cacheProducer.stream().filter(c -> c.getName().equalsIgnoreCase(producerName)).findFirst().orElse(null);
+                                    LinkedList<Movie> movies = moviesByProducer.stream()
                                             .map(m -> cacheMovie.stream()
-                                                    .filter(c -> c.title().equalsIgnoreCase(m.title()))
+                                                    .filter(c -> c.getTitle().equalsIgnoreCase(m.title()))
                                                     .findFirst()
                                                     .orElseGet(() -> {
                                                         Movie movie = findByTitle(m.title());
                                                         cacheMovie.add(movie);
                                                         return movie;
                                                     }))
-                                            .collect(Collectors.toSet());
+                                            .collect(Collectors.toCollection(LinkedList::new));
                                     if (Objects.nonNull(producerCache)) {
-                                        producerCache.movies().addAll(movies);
+                                        producerCache.getMovies().addAll(movies);
                                     } else {
-                                        Producer producer = new Producer(null, producerName, movies);
+                                        Producer producer = new Producer();
+                                        producer.setId(null);
+                                        producer.setName(producerName);
+                                        producer.setMovies(movies);
                                         producers.add(producer);
                                         cacheProducer.add(producer);
                                     }
@@ -113,5 +126,6 @@ public class MovieUseCase {
     public Movie findByTitle(String title) {
         return movieService.findByTitle(title);
     }
+
 }
 

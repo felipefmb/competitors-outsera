@@ -1,10 +1,10 @@
 package br.com.felipefmb.competitors.integration.controller;
 
-import br.com.felipefmb.competitors.adapters.in.web.response.dto.Interval;
+import br.com.felipefmb.competitors.adapters.in.web.response.dto.WinnerInfo;
 import br.com.felipefmb.competitors.adapters.in.web.response.dto.Winners;
-import br.com.felipefmb.competitors.adapters.out.persistence.entity.MovieEntity;
-import br.com.felipefmb.competitors.adapters.out.persistence.entity.ProducerEntity;
 import br.com.felipefmb.competitors.application.usecase.service.ProducerService;
+import br.com.felipefmb.competitors.domain.model.Movie;
+import br.com.felipefmb.competitors.domain.model.Producer;
 import br.com.felipefmb.competitors.integration.controller.mocks.MockFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -19,6 +19,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -48,13 +49,14 @@ class GoldenRaspberryAwardsV1ControllerMockedSuccessTest {
 
     @Test
     void testWithOneProducerWithTwoMovies() throws Exception {
-        ProducerEntity producerEntity = MockFactory.createProducerEntity(valueOf(ONE));
-        MovieEntity movieEntityOne = MockFactory.createMovieEntity(valueOf(ONE), 2020);
-        MovieEntity movieEntityTwo = MockFactory.createMovieEntity(valueOf(TWO), 2021);
+        Producer producer = MockFactory.createProducer(valueOf(ONE));
+        Movie movieEntityOne = MockFactory.createMovie(valueOf(ONE), 2020);
+        Movie movieEntityTwo = MockFactory.createMovie(valueOf(TWO), 2021);
 
-        producerEntity.setMovies(Set.of(movieEntityOne, movieEntityTwo));
+        producer.getMovies().clear();
+        producer.getMovies().addAll(Set.of(movieEntityOne, movieEntityTwo));
 
-        Mockito.when(producerService.findProducersWithMultipleMovies(Mockito.any())).thenReturn(List.of(producerEntity));
+        Mockito.when(producerService.findProducersWithMultipleMovies(Mockito.any())).thenReturn(List.of(producer));
 
         var resultActions = mockMvc.perform(get("/v1/golden-raspberry-awards/producers/winners"))
                 .andExpect(status().is(200));
@@ -65,38 +67,39 @@ class GoldenRaspberryAwardsV1ControllerMockedSuccessTest {
         Assertions.assertNotNull(content.max());
         Assertions.assertFalse(content.max().isEmpty());
         Assertions.assertFalse(content.min().isEmpty());
-        Interval minInterval = content.min().get(ZERO);
-        Interval maxInterval = content.max().get(ZERO);
-        Assertions.assertEquals(minInterval.interval(), ONE.intValue());
-        Assertions.assertEquals(minInterval.producer(), producerEntity.getName());
-        Assertions.assertEquals(minInterval.previousWin(), maxInterval.previousWin());
-        Assertions.assertEquals(minInterval.followingWin(), maxInterval.followingWin());
-        Assertions.assertEquals(maxInterval.producer(), producerEntity.getName());
-        Assertions.assertEquals(maxInterval.interval(), ONE.intValue());
+        WinnerInfo minWinnerInfo = content.min().get(ZERO);
+        WinnerInfo maxWinnerInfo = content.max().get(ZERO);
+        Assertions.assertEquals(minWinnerInfo.interval(), ONE.intValue());
+        Assertions.assertEquals(minWinnerInfo.producer(), producer.getName());
+        Assertions.assertEquals(minWinnerInfo.previousWin(), maxWinnerInfo.previousWin());
+        Assertions.assertEquals(minWinnerInfo.followingWin(), maxWinnerInfo.followingWin());
+        Assertions.assertEquals(maxWinnerInfo.producer(), producer.getName());
+        Assertions.assertEquals(maxWinnerInfo.interval(), ONE.intValue());
     }
 
     @Test
     void testWithDifferentIntervalsMaxMinAndSameProducer() throws Exception {
-        ProducerEntity producerEntity = MockFactory.createProducerEntity(valueOf(ONE));
-        MovieEntity movieEntityOne = MockFactory.createMovieEntity(valueOf(ONE), 2010);
-        MovieEntity movieEntityTwo = MockFactory.createMovieEntity(valueOf(TWO), 2011);
+        Producer producer = MockFactory.createProducer(valueOf(ONE));
+        Movie movieOne = MockFactory.createMovie(valueOf(ONE), 2010);
+        Movie movieTwo = MockFactory.createMovie(valueOf(TWO), 2011);
 
-        MovieEntity movieEntityThree = MockFactory.createMovieEntity(valueOf(THREE), 2013);
-        MovieEntity movieEntityFour = MockFactory.createMovieEntity(valueOf(FOUR), 2015);
+        Movie movieThree = MockFactory.createMovie(valueOf(THREE), 2013);
+        Movie movieFour = MockFactory.createMovie(valueOf(FOUR), 2015);
 
-        MovieEntity movieEntityFive = MockFactory.createMovieEntity(valueOf(FIVE), 2016);
-        MovieEntity movieEntitySix = MockFactory.createMovieEntity(valueOf(SIX), 2019);
+        Movie movieFive = MockFactory.createMovie(valueOf(FIVE), 2016);
+        Movie movieSix = MockFactory.createMovie(valueOf(SIX), 2019);
 
-        producerEntity.setMovies(Set.of(
-                movieEntityOne,
-                movieEntityTwo,
-                movieEntityThree,
-                movieEntityFour,
-                movieEntityFive,
-                movieEntitySix
+        producer.getMovies().clear();
+        producer.getMovies().addAll(Set.of(
+                movieOne,
+                movieTwo,
+                movieThree,
+                movieFour,
+                movieFive,
+                movieSix
         ));
 
-        Mockito.when(producerService.findProducersWithMultipleMovies(Mockito.any())).thenReturn(List.of(producerEntity));
+        Mockito.when(producerService.findProducersWithMultipleMovies(Mockito.any())).thenReturn(List.of(producer));
 
         var resultActions = mockMvc.perform(get("/v1/golden-raspberry-awards/producers/winners"))
                 .andExpect(status().is(200));
@@ -108,47 +111,51 @@ class GoldenRaspberryAwardsV1ControllerMockedSuccessTest {
         Assertions.assertFalse(content.max().isEmpty());
         Assertions.assertFalse(content.min().isEmpty());
 
-        Interval minInterval = content.min().get(ZERO);
-        Interval maxInterval = content.max().get(ZERO);
-        Assertions.assertEquals(minInterval.interval(), ONE.intValue());
-        Assertions.assertEquals(minInterval.producer(), producerEntity.getName());
-        Assertions.assertEquals(minInterval.previousWin(), movieEntityOne.getReleaseYear());
-        Assertions.assertEquals(minInterval.followingWin(), movieEntityTwo.getReleaseYear());
-        Assertions.assertEquals(maxInterval.producer(), producerEntity.getName());
-        Assertions.assertEquals(maxInterval.interval(), THREE.intValue());
-        Assertions.assertEquals(maxInterval.previousWin(), movieEntityFive.getReleaseYear());
-        Assertions.assertEquals(maxInterval.followingWin(), movieEntitySix.getReleaseYear());
+        WinnerInfo minWinnerInfo = content.min().get(ZERO);
+        WinnerInfo maxWinnerInfo = content.max().get(ZERO);
+        Assertions.assertEquals(minWinnerInfo.interval(), ONE.intValue());
+        Assertions.assertEquals(minWinnerInfo.producer(), producer.getName());
+        Assertions.assertEquals(minWinnerInfo.previousWin(), movieOne.getReleaseYear());
+        Assertions.assertEquals(minWinnerInfo.followingWin(), movieTwo.getReleaseYear());
+        Assertions.assertEquals(maxWinnerInfo.producer(), producer.getName());
+        Assertions.assertEquals(maxWinnerInfo.interval(), THREE.intValue());
+        Assertions.assertEquals(maxWinnerInfo.previousWin(), movieFive.getReleaseYear());
+        Assertions.assertEquals(maxWinnerInfo.followingWin(), movieSix.getReleaseYear());
     }
 
     @Test
     void testWithDifferentIntervalsMaxMinAndDifferentProducers() throws Exception {
-        ProducerEntity producerEntity = MockFactory.createProducerEntity(valueOf(ONE));
-        ProducerEntity producerEntityTwo = MockFactory.createProducerEntity(valueOf(TWO));
-        ProducerEntity producerEntityTree = MockFactory.createProducerEntity(valueOf(THREE));
+        Producer producer = MockFactory.createProducer(valueOf(ONE));
+        Producer producerTwo = MockFactory.createProducer(valueOf(TWO));
+        Producer producerTree = MockFactory.createProducer(valueOf(THREE));
 
-        MovieEntity movieEntityOne = MockFactory.createMovieEntity(valueOf(ONE), 2010);
-        MovieEntity movieEntityTwo = MockFactory.createMovieEntity(valueOf(TWO), 2011);
+        Movie movieOne = MockFactory.createMovie(valueOf(ONE), 2010);
+        Movie movieTwo = MockFactory.createMovie(valueOf(TWO), 2011);
 
-        MovieEntity movieEntityThree = MockFactory.createMovieEntity(valueOf(THREE), 2013);
-        MovieEntity movieEntityFour = MockFactory.createMovieEntity(valueOf(FOUR), 2015);
+        Movie movieThree = MockFactory.createMovie(valueOf(THREE), 2013);
+        Movie movieFour = MockFactory.createMovie(valueOf(FOUR), 2015);
 
-        MovieEntity movieEntityFive = MockFactory.createMovieEntity(valueOf(FIVE), 2016);
-        MovieEntity movieEntitySix = MockFactory.createMovieEntity(valueOf(SIX), 2019);
+        Movie movieFive = MockFactory.createMovie(valueOf(FIVE), 2016);
+        Movie movieSix = MockFactory.createMovie(valueOf(SIX), 2019);
 
-        producerEntity.setMovies(Set.of(
-                movieEntityOne,
-                movieEntityTwo
-        ));
-        producerEntityTwo.setMovies(Set.of(
-                movieEntityThree,
-                movieEntityFour
-        ));
-        producerEntityTree.setMovies(Set.of(
-                movieEntityFive,
-                movieEntitySix
+        producer.getMovies().addAll(Set.of(
+                movieOne,
+                movieTwo
         ));
 
-        Mockito.when(producerService.findProducersWithMultipleMovies(Mockito.any())).thenReturn(List.of(producerEntity, producerEntityTwo, producerEntityTree));
+        producerTwo.getMovies().clear();
+        producerTwo.getMovies().addAll(Set.of(
+                movieThree,
+                movieFour
+        ));
+
+        producerTree.getMovies().clear();
+        producerTree.getMovies().addAll(Set.of(
+                movieFive,
+                movieSix
+        ));
+
+        Mockito.when(producerService.findProducersWithMultipleMovies(Mockito.any())).thenReturn(List.of(producer, producerTwo, producerTree));
 
         var resultActions = mockMvc.perform(get("/v1/golden-raspberry-awards/producers/winners"))
                 .andExpect(status().is(200));
@@ -160,16 +167,16 @@ class GoldenRaspberryAwardsV1ControllerMockedSuccessTest {
         Assertions.assertFalse(content.max().isEmpty());
         Assertions.assertFalse(content.min().isEmpty());
 
-        Interval minInterval = content.min().get(ZERO);
-        Interval maxInterval = content.max().get(ZERO);
-        Assertions.assertEquals(minInterval.interval(), ONE.intValue());
-        Assertions.assertEquals(minInterval.producer(), producerEntity.getName());
-        Assertions.assertEquals(minInterval.previousWin(), movieEntityOne.getReleaseYear());
-        Assertions.assertEquals(minInterval.followingWin(), movieEntityTwo.getReleaseYear());
-        Assertions.assertEquals(maxInterval.producer(), producerEntityTree.getName());
-        Assertions.assertEquals(maxInterval.interval(), THREE.intValue());
-        Assertions.assertEquals(maxInterval.previousWin(), movieEntityFive.getReleaseYear());
-        Assertions.assertEquals(maxInterval.followingWin(), movieEntitySix.getReleaseYear());
+        WinnerInfo minWinnerInfo = content.min().get(ZERO);
+        WinnerInfo maxWinnerInfo = content.max().get(ZERO);
+        Assertions.assertEquals(minWinnerInfo.interval(), ONE.intValue());
+        Assertions.assertEquals(minWinnerInfo.producer(), producer.getName());
+        Assertions.assertEquals(minWinnerInfo.previousWin(), movieOne.getReleaseYear());
+        Assertions.assertEquals(minWinnerInfo.followingWin(), movieTwo.getReleaseYear());
+        Assertions.assertEquals(maxWinnerInfo.producer(), producerTree.getName());
+        Assertions.assertEquals(maxWinnerInfo.interval(), THREE.intValue());
+        Assertions.assertEquals(maxWinnerInfo.previousWin(), movieFive.getReleaseYear());
+        Assertions.assertEquals(maxWinnerInfo.followingWin(), movieSix.getReleaseYear());
     }
 
 }

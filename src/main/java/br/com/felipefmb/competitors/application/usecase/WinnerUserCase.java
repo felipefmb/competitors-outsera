@@ -1,6 +1,6 @@
 package br.com.felipefmb.competitors.application.usecase;
 
-import br.com.felipefmb.competitors.adapters.in.web.response.dto.Interval;
+import br.com.felipefmb.competitors.adapters.in.web.response.dto.WinnerInfo;
 import br.com.felipefmb.competitors.adapters.in.web.response.dto.Winners;
 import br.com.felipefmb.competitors.domain.exceptions.NotFoundException;
 import br.com.felipefmb.competitors.domain.model.Movie;
@@ -31,30 +31,30 @@ public class WinnerUserCase {
     }
 
     private Winners getWinners(List<Producer> producers) {
-        List<Interval> intervals = getIntervals(producers);
-        intervals.sort(Comparator.comparingInt(Interval::interval));
-        List<Interval> min = intervals.stream()
-                .filter(i -> i.interval() == intervals.get(0).interval())
+        List<WinnerInfo> winnerInfos = getWinnerInfos(producers);
+        winnerInfos.sort(Comparator.comparingInt(WinnerInfo::interval));
+        List<WinnerInfo> min = winnerInfos.stream()
+                .filter(i -> i.interval() == winnerInfos.get(0).interval())
                 .toList();
-        List<Interval> max = intervals.stream()
-                .filter(i -> i.interval() == intervals.get(intervals.size() - 1).interval())
+        List<WinnerInfo> max = winnerInfos.stream()
+                .filter(i -> i.interval() == winnerInfos.get(winnerInfos.size() - 1).interval())
                 .toList();
         return new Winners(min, max);
     }
 
-    private List<Interval> getIntervals(List<Producer> producers) {
-        List<Interval> intervals = new ArrayList<>();
+    private List<WinnerInfo> getWinnerInfos(List<Producer> producers) {
+        List<WinnerInfo> winnerInfos = new ArrayList<>();
         producers.forEach(producer -> {
-            ArrayList<Movie> moviesByProducer = new ArrayList<>(producer.movies());
-            moviesByProducer.sort(Comparator.comparing(Movie::releaseYear));
+            ArrayList<Movie> moviesByProducer = new ArrayList<>(producer.getMovies());
+            moviesByProducer.sort(Comparator.comparing(Movie::getReleaseYear));
             for (int i = 0; i < moviesByProducer.size() - 1; i++) {
                 Movie current = moviesByProducer.get(i);
                 Movie next = moviesByProducer.get(i + 1);
-                int interval = next.releaseYear() - current.releaseYear();
-                intervals.add(new Interval(producer.name(), interval, current.releaseYear(), next.releaseYear()));
+                int interval = next.getReleaseYear() - current.getReleaseYear();
+                winnerInfos.add(new WinnerInfo(producer.getName(), interval, current.getReleaseYear(), next.getReleaseYear()));
             }
         });
-        return intervals;
+        return winnerInfos;
     }
 
 }

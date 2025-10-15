@@ -1,6 +1,6 @@
 package br.com.felipefmb.competitors.adapters.in.web.response.dto;
 
-public record Interval(
+public record WinnerInfo(
         String producer,
         int interval,
         int previousWin,

@@ -6,17 +6,17 @@ import br.com.felipefmb.competitors.domain.model.Studio;
 public class StudioMapper implements Mapper<Studio, StudioEntity> {
 
     public Studio toDomain(StudioEntity entity) {
-        return new Studio(
-                entity.getId(),
-                entity.getName()
-        );
+        Studio domain = new Studio();
+        domain.setId(entity.getId());
+        domain.setName(entity.getName());
+        return domain;
     }
 
     @Override
     public StudioEntity toEntity(Studio domain) {
         StudioEntity entity = new StudioEntity();
-        entity.setId(domain.id());
-        entity.setName(domain.name());
+        entity.setId(domain.getId());
+        entity.setName(domain.getName());
         return entity;
     }
 

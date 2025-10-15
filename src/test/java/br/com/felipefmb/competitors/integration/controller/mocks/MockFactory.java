@@ -8,6 +8,7 @@ import br.com.felipefmb.competitors.domain.model.Producer;
 import br.com.felipefmb.competitors.domain.model.Studio;
 
 import java.math.BigInteger;
+import java.util.LinkedList;
 import java.util.Set;
 
 public class MockFactory {
@@ -33,15 +34,28 @@ public class MockFactory {
     public static final Boolean LOOSER = Boolean.FALSE;
 
     public static Producer createProducer(BigInteger id) {
-        return new Producer(id, String.format(NAME_PRODUCER, id), Set.of());
+        Producer producer = new Producer();
+        producer.setId(id);
+        producer.setName(String.format(NAME_PRODUCER, id));
+        producer.setMovies(new LinkedList<>());
+        return producer;
     }
 
     public static Movie createMovie(BigInteger id, int releaseYear) {
-        return new Movie(id, releaseYear, String.format(TITLE_MOVIE, id), Set.of(), WINNER);
+        Movie movie = new Movie();
+        movie.setId(id);
+        movie.setReleaseYear(releaseYear);
+        movie.setTitle(String.format(TITLE_MOVIE, id));
+        movie.setStudios(new LinkedList<>());
+        movie.setWinner(WINNER);
+        return movie;
     }
 
     public static Studio createStudio(BigInteger id) {
-        return new Studio(id, String.format(NAME_STUDIO, id));
+        Studio studio = new Studio();
+        studio.setId(id);
+        studio.setName(String.format(NAME_STUDIO, id));
+        return studio;
     }
 
     public static ProducerEntity createProducerEntity(BigInteger id) {

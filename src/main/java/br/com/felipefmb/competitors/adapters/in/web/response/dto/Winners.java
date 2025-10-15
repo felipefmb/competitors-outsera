@@ -5,7 +5,7 @@ import br.com.felipefmb.competitors.adapters.in.web.response.Response;
 import java.util.List;
 
 public record Winners(
-        List<Interval> min,
-        List<Interval> max
+        List<WinnerInfo> min,
+        List<WinnerInfo> max
 ) implements Response {
 }

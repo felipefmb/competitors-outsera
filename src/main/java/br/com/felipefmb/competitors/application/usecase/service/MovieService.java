@@ -4,10 +4,13 @@ import br.com.felipefmb.competitors.adapters.out.persistence.entity.MovieEntity;
 import br.com.felipefmb.competitors.adapters.out.persistence.mapper.MovieMapper;
 import br.com.felipefmb.competitors.domain.model.Movie;
 import br.com.felipefmb.competitors.domain.ports.out.MovieRepositoryPort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,5 +41,9 @@ public class MovieService {
     public Movie findById(BigInteger id) {
         Optional<MovieEntity> optionalMovieEntity = movieRepositoryPort.findById(id);
         return optionalMovieEntity.map(movieMapper::toDomain).orElse(null);
+    }
+
+    public List<Movie> findAll(Pageable page) {
+        return movieMapper.toDomains(movieRepositoryPort.findAll(page));
     }
 }

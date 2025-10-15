@@ -21,7 +21,7 @@ public class StudioService {
     }
 
     public List<StudioEntity> save(List<Studio> studios) {
-        List<StudioEntity> entities = mapper.toEntities(studios);
+        List<StudioEntity> entities = mapper.toEntitiesListFromList(studios);
         return repository.saveAll(entities);
     }
 

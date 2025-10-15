@@ -39,7 +39,7 @@ public class ProducerService {
     }
 
 
-    public List<ProducerEntity> findProducersWithMultipleMovies(Pageable pages) {
-        return repository.findProducersWithMultipleMovies(pages);
+    public List<Producer> findProducersWithMultipleMovies(Pageable pages) {
+        return mapper.toDomains(repository.findProducersWithMultipleMovies(pages));
     }
 }
