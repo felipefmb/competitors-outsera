@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class StudioService {
@@ -20,22 +21,28 @@ public class StudioService {
         this.mapper = new StudioMapper();
     }
 
-    public List<StudioEntity> save(List<Studio> studios) {
+    public List<Studio> save(List<Studio> studios) {
         List<StudioEntity> entities = mapper.toEntitiesListFromList(studios);
-        return repository.saveAll(entities);
+        entities = repository.saveAll(entities);
+        return mapper.toDomains(entities);
     }
 
-    public StudioEntity save(Studio studio) {
+    public Studio save(Studio studio) {
         StudioEntity entity = mapper.toEntity(studio);
-        return repository.save(entity);
+        entity = repository.save(entity);
+        return mapper.toDomain(entity);
     }
 
-    public StudioEntity findByName(String name) {
-        return repository.findByName(name);
+    public Studio findByName(String name) {
+        var entity = repository.findByName(name);
+        if (Objects.isNull(entity)) {
+            return null;
+        }
+        return mapper.toDomain(entity);
     }
 
-    public StudioEntity findById(BigInteger id) {
-        return repository.findById(id).orElse(null);
+    public Studio findById(BigInteger id) {
+        return repository.findById(id).map(mapper::toDomain).orElse(null);
     }
 }
 
