@@ -8,7 +8,5 @@ import java.util.List;
 public interface ProducerRepositoryPort {
     ProducerEntity save(ProducerEntity entity);
 
-    List<ProducerEntity> findAll();
-
     List<ProducerEntity> findProducersWithMultipleMovies(Pageable pages);
 }

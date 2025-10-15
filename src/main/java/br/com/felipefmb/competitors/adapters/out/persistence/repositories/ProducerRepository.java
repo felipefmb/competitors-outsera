@@ -25,17 +25,6 @@ public class ProducerRepository implements ProducerRepositoryPort {
     }
 
     @Override
-    public List<ProducerEntity> findAll() {
-        Pageable pages = Pageable.ofSize(100);
-        Page<ProducerEntity> entities = producerRepositoryJpa.findAll(pages);
-        while (entities.hasNext()) {
-            pages = entities.nextPageable();
-            entities = producerRepositoryJpa.findAll(pages);
-        }
-        return entities.getContent();
-    }
-
-    @Override
     public List<ProducerEntity> findProducersWithMultipleMovies(Pageable pages) {
         Page<ProducerEntity> entities = producerRepositoryJpa.findProducersWithMultipleMovies(pages);
         while (entities.hasNext()) {

@@ -1,7 +1,6 @@
 package br.com.felipefmb.competitors.adapters.out.persistence.repositories;
 
 import br.com.felipefmb.competitors.adapters.out.persistence.entity.MovieEntity;
-import br.com.felipefmb.competitors.adapters.out.persistence.entity.ProducerEntity;
 import br.com.felipefmb.competitors.domain.ports.out.MovieRepositoryPort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Repository
 public class MovieRepository implements MovieRepositoryPort {
