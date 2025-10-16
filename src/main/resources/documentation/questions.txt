@@ -46,3 +46,11 @@ R-Todos os produtores devem ser considerados individualmente.
 R-Não existe produtor com nome “Luiz” ou “Luis” no arquivo, mas caso exista caso parecido pode-se considerar como duas pessoas diferentes;
   Na linha 171 falta um espaço antes de “and”, porém é a única linha que isso ocorre e o filme não foi vencedor por isso não afeta o resultado;
   O arquivo utilizado deve ser o original fornecido, sem modificações.
+----
+Itens observados após a entrega:
+OK. 1. Considerando o conjunto de dados fornecido juntamente com o teste, o resultado esperado é um registro min com intervalo igual a 1 e um registro max com intervalo igual a 13;
+
+Requisito não funcional
+OK. 2: O teste de integração deve garantir que os dados retornados na API estão de acordo com o conteúdo do arquivo padrão, e deve falhar se o arquivo for modificado de forma que qualquer aspecto do resultado mude;
+OK. 3: O sistema realiza 6+ loops em código para chegar ao resultado;
+OK. 4: Existem métodos com funcionalidade obscura (ex: ProducerUseCase.findAll não traz todos os produtores pois possui filtro adicional).

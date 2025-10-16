@@ -1,12 +1,36 @@
 package br.com.felipefmb.competitors.adapters.out.persistence.repositories;
 
 import br.com.felipefmb.competitors.adapters.out.persistence.entity.ProducerEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
+import br.com.felipefmb.competitors.domain.ports.out.ProducerRepositoryPort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigInteger;
 import java.util.List;
 
-public interface ProducerRepository extends JpaRepository<ProducerEntity, BigInteger> {
+@Repository
+public class ProducerRepository implements ProducerRepositoryPort {
 
-    List<ProducerEntity> findByName(String name);
+    private final ProducerRepositoryJpa producerRepositoryJpa;
+
+    public ProducerRepository(ProducerRepositoryJpa producerRepositoryJpa) {
+        this.producerRepositoryJpa = producerRepositoryJpa;
+    }
+
+    @Override
+    @Transactional
+    public ProducerEntity save(ProducerEntity entity) {
+        return producerRepositoryJpa.save(entity);
+    }
+
+    @Override
+    public List<ProducerEntity> findProducersWithMultipleMovies(Pageable pages) {
+        Page<ProducerEntity> entities = producerRepositoryJpa.findProducersWithMultipleMovies(pages);
+        while (entities.hasNext()) {
+            pages = entities.nextPageable();
+            entities = producerRepositoryJpa.findProducersWithMultipleMovies(pages);
+        }
+        return entities.getContent();
+    }
 }

@@ -1,15 +1,15 @@
 package br.com.felipefmb.competitors.adapters.out.persistence.entity;
 
 import jakarta.persistence.*;
+import jakarta.persistence.Entity;
 
 import java.math.BigInteger;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity(name = "movie")
 @Table(name = "movie")
 @SequenceGenerator(name = "movies_seq", sequenceName = "movies_seq", allocationSize = 1)
-public class MovieEntity {
+public class MovieEntity implements IEntity {
 
     @Id
     @Column(name = "movie_id")
@@ -36,92 +36,51 @@ public class MovieEntity {
     @Column(name = "winner", nullable = false)
     private boolean winner;
 
-    public MovieEntity() {
-    }
-
-    public MovieEntity(BigInteger id, Integer releaseYear, String title, Set<StudioEntity> movieStudios, Set<ProducerEntity> movieProducers, boolean winner) {
-        this.id = id;
-        this.releaseYear = releaseYear;
-        this.title = title;
-        this.movieStudios = movieStudios;
-        this.movieProducers = movieProducers;
-        this.winner = winner;
-    }
-
     public BigInteger getId() {
         return id;
     }
 
-    public MovieEntity setId(BigInteger id) {
+    public void setId(BigInteger id) {
         this.id = id;
-        return this;
     }
 
     public Integer getReleaseYear() {
         return releaseYear;
     }
 
-    public MovieEntity setReleaseYear(Integer releaseYear) {
+    public void setReleaseYear(Integer releaseYear) {
         this.releaseYear = releaseYear;
-        return this;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public MovieEntity setTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
-        return this;
     }
 
     public Set<StudioEntity> getMovieStudios() {
         return movieStudios;
     }
 
-    public MovieEntity setMovieStudios(Set<StudioEntity> movieStudios) {
+    public void setMovieStudios(Set<StudioEntity> movieStudios) {
         this.movieStudios = movieStudios;
-        return this;
     }
 
     public Set<ProducerEntity> getMovieProducers() {
         return movieProducers;
     }
 
-    public MovieEntity setMovieProducers(Set<ProducerEntity> movieProducers) {
+    public void setMovieProducers(Set<ProducerEntity> movieProducers) {
         this.movieProducers = movieProducers;
-        return this;
     }
 
     public boolean isWinner() {
         return winner;
     }
 
-    public MovieEntity setWinner(boolean winner) {
+    public void setWinner(boolean winner) {
         this.winner = winner;
-        return this;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        MovieEntity that = (MovieEntity) object;
-        return Objects.equals(getId(), that.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
-    }
-
-    @Override
-    public String toString() {
-        return "MovieEntity{" +
-                "id=" + id +
-                ", releaseYear=" + releaseYear +
-                ", title='" + title + '\'' +
-                ", winner=" + winner +
-                '}';
     }
 }
