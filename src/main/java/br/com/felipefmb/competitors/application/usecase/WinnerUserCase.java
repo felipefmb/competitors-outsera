@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 @Component
@@ -31,30 +32,45 @@ public class WinnerUserCase {
     }
 
     private Winners getWinners(List<Producer> producers) {
-        List<WinnerInfo> winnerInfos = getWinnerInfos(producers);
-        winnerInfos.sort(Comparator.comparingInt(WinnerInfo::interval));
-        List<WinnerInfo> min = winnerInfos.stream()
-                .filter(i -> i.interval() == winnerInfos.get(0).interval())
-                .toList();
-        List<WinnerInfo> max = winnerInfos.stream()
-                .filter(i -> i.interval() == winnerInfos.get(winnerInfos.size() - 1).interval())
-                .toList();
-        return new Winners(min, max);
-    }
-
-    private List<WinnerInfo> getWinnerInfos(List<Producer> producers) {
-        List<WinnerInfo> winnerInfos = new ArrayList<>();
-        producers.forEach(producer -> {
+        Integer minInterval = 0;
+        Integer maxInterval = 0;
+        LinkedList<WinnerInfo> winnersMinInterval = new LinkedList<>();
+        LinkedList<WinnerInfo> winnersMaxInterval = new LinkedList<>();
+        for (var producer : producers) {
             ArrayList<Movie> moviesByProducer = new ArrayList<>(producer.getMovies());
             moviesByProducer.sort(Comparator.comparing(Movie::getReleaseYear));
             for (int i = 0; i < moviesByProducer.size() - 1; i++) {
                 Movie current = moviesByProducer.get(i);
                 Movie next = moviesByProducer.get(i + 1);
                 int interval = next.getReleaseYear() - current.getReleaseYear();
-                winnerInfos.add(new WinnerInfo(producer.getName(), interval, current.getReleaseYear(), next.getReleaseYear()));
+                WinnerInfo winnerInfo = new WinnerInfo(producer.getName(), interval, current.getReleaseYear(), next.getReleaseYear());
+                minInterval = generateMinInterval(winnersMinInterval, winnerInfo, minInterval, interval);
+                maxInterval = generateMaxInterval(winnersMaxInterval, winnerInfo, maxInterval, interval);
             }
-        });
-        return winnerInfos;
+        }
+        return new Winners(winnersMinInterval, winnersMaxInterval);
+    }
+
+    private Integer generateMaxInterval(LinkedList<WinnerInfo> winnersMaxInterval, WinnerInfo winnerInfo, Integer maxInterval, Integer interval) {
+        if (interval >= maxInterval) {
+            if (interval > maxInterval) {
+                winnersMaxInterval.clear();
+            }
+            winnersMaxInterval.add(winnerInfo);
+            maxInterval = interval;
+        }
+        return maxInterval;
+    }
+
+    private Integer generateMinInterval(LinkedList<WinnerInfo> winnerInfos, WinnerInfo winnerInfo, Integer minInterval, Integer interval) {
+        if (interval <= minInterval || minInterval == 0) {
+            if (interval < minInterval) {
+                winnerInfos.clear();
+            }
+            winnerInfos.add(winnerInfo);
+            minInterval = interval;
+        }
+        return minInterval;
     }
 
 }
