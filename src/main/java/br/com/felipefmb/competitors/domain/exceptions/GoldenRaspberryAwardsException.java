@@ -1,12 +1,11 @@
 package br.com.felipefmb.competitors.domain.exceptions;
 
-public class GoldenRaspberryAwardsException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public class GoldenRaspberryAwardsException extends RuntimeException {
     public GoldenRaspberryAwardsException(String message) {
         super(message);
-    }
-
-    public GoldenRaspberryAwardsException(Throwable cause) {
-        super(cause);
     }
 }

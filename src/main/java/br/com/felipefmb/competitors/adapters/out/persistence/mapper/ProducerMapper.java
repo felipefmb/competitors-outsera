@@ -13,20 +13,20 @@ public class ProducerMapper implements Mapper<Producer, ProducerEntity> {
 
     @Override
     public Producer toDomain(ProducerEntity entity) {
-        return new Producer(
-                entity.getId(),
-                entity.getName(),
-                movieMapper.toDomains(entity.getMovies())
-        );
+        Producer domain = new Producer();
+        domain.setId(entity.getId());
+        domain.setName(entity.getName());
+        domain.setMovies(movieMapper.toDomainsListFromSet(entity.getMovies()));
+        return domain;
     }
 
     @Override
     public ProducerEntity toEntity(Producer domain) {
-        return new ProducerEntity(
-                domain.id(),
-                domain.name(),
-                movieMapper.toEntities(domain.movies())
-        );
+        ProducerEntity entity = new ProducerEntity();
+        entity.setId(domain.getId());
+        entity.setName(domain.getName());
+        entity.setMovies(movieMapper.toEntityListFromSet(domain.getMovies()));
+        return entity;
     }
 
 }

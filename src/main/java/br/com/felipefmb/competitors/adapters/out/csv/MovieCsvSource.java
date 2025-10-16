@@ -31,9 +31,13 @@ public class MovieCsvSource extends ClassPathCsvSource<MovieCsvSourceDTO> {
                     List<String> producers = Arrays.stream(producersNames.split(",| and ")).map(String::trim).toList();
                     List<String> studio = isBlank(studiosNames) ? List.of() :
                             Arrays.stream(studiosNames.split(",| and ")).map(String::trim).toList();
-                    return new MovieCsvSourceDTO(
-                            null, releaseYear, title, studio, producers, winner
-                    );
+                    MovieCsvSourceDTO dto = new MovieCsvSourceDTO();
+                    dto.setReleaseYear(releaseYear);
+                    dto.setTitle(title);
+                    dto.setStudio(studio);
+                    dto.setProducer(producers);
+                    dto.setWinner(winner);
+                    return dto;
                 })
                 .filter(Objects::nonNull)
                 .toList();

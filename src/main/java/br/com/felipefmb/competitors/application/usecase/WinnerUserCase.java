@@ -1,6 +1,6 @@
 package br.com.felipefmb.competitors.application.usecase;
 
-import br.com.felipefmb.competitors.adapters.in.web.response.dto.Interval;
+import br.com.felipefmb.competitors.adapters.in.web.response.dto.WinnerInfo;
 import br.com.felipefmb.competitors.adapters.in.web.response.dto.Winners;
 import br.com.felipefmb.competitors.domain.exceptions.NotFoundException;
 import br.com.felipefmb.competitors.domain.model.Movie;
@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Component
 public class WinnerUserCase {
@@ -24,37 +24,53 @@ public class WinnerUserCase {
 
     @Transactional(readOnly = true)
     public Winners findWinners() {
-        List<Producer> producers = producerUseCase.findAll();
+        List<Producer> producers = producerUseCase.findProducersWithMultipleMovies();
         if (producers.isEmpty()) {
             throw new NotFoundException("No records found");
         }
-        List<Interval> intervals = getIntervals(producers);
-        return getWinners(intervals);
+        return getWinners(producers);
     }
 
-    private List<Interval> getIntervals(List<Producer> producers) {
-        List<Interval> intervals = new ArrayList<>();
-        producers.forEach(producer -> {
-            ArrayList<Movie> moviesByProducer = new ArrayList<>(producer.movies());
-            moviesByProducer.sort(Comparator.comparing(Movie::releaseYear));
+    private Winners getWinners(List<Producer> producers) {
+        Integer minInterval = 0;
+        Integer maxInterval = 0;
+        LinkedList<WinnerInfo> winnersMinInterval = new LinkedList<>();
+        LinkedList<WinnerInfo> winnersMaxInterval = new LinkedList<>();
+        for (var producer : producers) {
+            ArrayList<Movie> moviesByProducer = new ArrayList<>(producer.getMovies());
+            moviesByProducer.sort(Comparator.comparing(Movie::getReleaseYear));
             for (int i = 0; i < moviesByProducer.size() - 1; i++) {
                 Movie current = moviesByProducer.get(i);
                 Movie next = moviesByProducer.get(i + 1);
-                int interval = next.releaseYear() - current.releaseYear();
-                intervals.add(new Interval(producer.name(), interval, current.releaseYear(), next.releaseYear()));
+                int interval = next.getReleaseYear() - current.getReleaseYear();
+                WinnerInfo winnerInfo = new WinnerInfo(producer.getName(), interval, current.getReleaseYear(), next.getReleaseYear());
+                minInterval = generateMinInterval(winnersMinInterval, winnerInfo, minInterval, interval);
+                maxInterval = generateMaxInterval(winnersMaxInterval, winnerInfo, maxInterval, interval);
             }
-        });
-        return intervals;
+        }
+        return new Winners(winnersMinInterval, winnersMaxInterval);
     }
 
-    private Winners getWinners(List<Interval> intervals) {
-        intervals.sort(Comparator.comparingInt(Interval::interval));
-
-        List<Integer> minIntervals = intervals.stream().limit(2).map(Interval::interval).toList();
-        List<Integer> maxInterval = Stream.of(intervals.get(intervals.size() - 1)).map(Interval::interval).toList();
-
-        List<Interval> min = intervals.stream().filter(l -> minIntervals.contains(l.interval())).toList();
-        List<Interval> max = intervals.stream().filter(l -> maxInterval.contains(l.interval())).toList();
-        return new Winners(min, max);
+    private Integer generateMaxInterval(LinkedList<WinnerInfo> winnersMaxInterval, WinnerInfo winnerInfo, Integer maxInterval, Integer interval) {
+        if (interval >= maxInterval) {
+            if (interval > maxInterval) {
+                winnersMaxInterval.clear();
+            }
+            winnersMaxInterval.add(winnerInfo);
+            maxInterval = interval;
+        }
+        return maxInterval;
     }
+
+    private Integer generateMinInterval(LinkedList<WinnerInfo> winnerInfos, WinnerInfo winnerInfo, Integer minInterval, Integer interval) {
+        if (interval <= minInterval || minInterval == 0) {
+            if (interval < minInterval) {
+                winnerInfos.clear();
+            }
+            winnerInfos.add(winnerInfo);
+            minInterval = interval;
+        }
+        return minInterval;
+    }
+
 }

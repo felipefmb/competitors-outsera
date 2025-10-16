@@ -1,51 +1,45 @@
 package br.com.felipefmb.competitors.application.usecase.service;
 
+import br.com.felipefmb.competitors.adapters.out.persistence.entity.MovieEntity;
 import br.com.felipefmb.competitors.adapters.out.persistence.entity.ProducerEntity;
 import br.com.felipefmb.competitors.adapters.out.persistence.mapper.ProducerMapper;
-import br.com.felipefmb.competitors.adapters.out.persistence.repositories.ProducerRepository;
 import br.com.felipefmb.competitors.domain.model.Producer;
+import br.com.felipefmb.competitors.domain.ports.out.MovieRepositoryPort;
+import br.com.felipefmb.competitors.domain.ports.out.ProducerRepositoryPort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class ProducerService {
 
-    private final ProducerRepository repository;
+    private final ProducerRepositoryPort repository;
     private final ProducerMapper mapper;
-    private final MovieService movieService;
+    private final MovieRepositoryPort movieRepository;
 
-    public ProducerService(ProducerRepository repository, MovieService movieService) {
+    public ProducerService(ProducerRepositoryPort repository, MovieRepositoryPort movieRepository) {
         this.repository = repository;
-        this.movieService = movieService;
         this.mapper = new ProducerMapper();
+        this.movieRepository = movieRepository;
     }
 
-    public List<ProducerEntity> save(Set<Producer> producers) {
-        Set<ProducerEntity> entities = mapper.toEntities(producers);
-        return repository.saveAll(entities);
-    }
-
-    public ProducerEntity save(Producer producer) {
+    public Producer save(Producer producer) {
         ProducerEntity entity = mapper.toEntity(producer);
-        entity.setMovies(entity.getMovies().stream().map(f -> movieService.findById(f.getId())).collect(Collectors.toSet()));
-        return repository.save(entity);
+        Set<MovieEntity> movies = entity.getMovies().stream()
+                .map(f -> movieRepository.findById(f.getId()).orElse(null))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+        entity.setMovies(movies);
+        entity = repository.save(entity);
+        return mapper.toDomain(entity);
     }
 
-    public List<ProducerEntity> findByName(String name) {
-        return repository.findByName(name);
-    }
 
-    public ProducerEntity findById(BigInteger id) {
-        Optional<ProducerEntity> entity = repository.findById(id);
-        return entity.orElse(null);
-    }
-
-    public List<ProducerEntity> findAll() {
-        return repository.findAll();
+    public List<Producer> findProducersWithMultipleMovies(Pageable pages) {
+        return mapper.toDomains(repository.findProducersWithMultipleMovies(pages));
     }
 }
