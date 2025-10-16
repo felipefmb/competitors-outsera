@@ -2,7 +2,7 @@ package br.com.felipefmb.competitors.domain.model;
 
 import java.math.BigInteger;
 
-public class Studio implements Domain {
+public class Studio implements IDomain {
     BigInteger id;
     String name;
 
@@ -10,17 +10,15 @@ public class Studio implements Domain {
         return id;
     }
 
-    public Studio setId(BigInteger id) {
+    public void setId(BigInteger id) {
         this.id = id;
-        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public Studio setName(String name) {
+    public void setName(String name) {
         this.name = name;
-        return this;
     }
 }

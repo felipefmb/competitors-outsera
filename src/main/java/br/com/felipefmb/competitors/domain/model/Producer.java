@@ -3,7 +3,7 @@ package br.com.felipefmb.competitors.domain.model;
 import java.math.BigInteger;
 import java.util.List;
 
-public class Producer implements Domain {
+public class Producer implements IDomain {
     private BigInteger id;
     private String name;
     private List<Movie> movies;
@@ -12,26 +12,23 @@ public class Producer implements Domain {
         return id;
     }
 
-    public Producer setId(BigInteger id) {
+    public void setId(BigInteger id) {
         this.id = id;
-        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public Producer setName(String name) {
+    public void setName(String name) {
         this.name = name;
-        return this;
     }
 
     public List<Movie> getMovies() {
         return movies;
     }
 
-    public Producer setMovies(List<Movie> movies) {
+    public void setMovies(List<Movie> movies) {
         this.movies = movies;
-        return this;
     }
 }

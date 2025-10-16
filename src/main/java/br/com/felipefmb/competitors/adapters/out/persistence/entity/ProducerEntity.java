@@ -7,7 +7,7 @@ import java.util.Set;
 @Entity
 @Table(name = "producer")
 @SequenceGenerator(name = "producers_seq", sequenceName = "producers_seq", allocationSize = 1)
-public class ProducerEntity {
+public class ProducerEntity implements IEntity {
 
     @Id
     @Column(name = "producer_id")
@@ -30,27 +30,23 @@ public class ProducerEntity {
         return id;
     }
 
-    public ProducerEntity setId(BigInteger id) {
+    public void setId(BigInteger id) {
         this.id = id;
-        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public ProducerEntity setName(String name) {
+    public void setName(String name) {
         this.name = name;
-        return this;
     }
 
     public Set<MovieEntity> getMovies() {
         return movies;
     }
 
-    public ProducerEntity setMovies(Set<MovieEntity> movies) {
+    public void setMovies(Set<MovieEntity> movies) {
         this.movies = movies;
-        return this;
     }
-
 }

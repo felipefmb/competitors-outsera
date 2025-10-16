@@ -63,12 +63,12 @@ class GoldenRaspberryAwardsV1ControllerMockedSuccessTest {
         var response = resultActions.andReturn().getResponse();
         var content = mapper.readValue(response.getContentAsString(), Winners.class);
         Assertions.assertNotNull(content);
-        Assertions.assertNotNull(content.min());
-        Assertions.assertNotNull(content.max());
-        Assertions.assertFalse(content.max().isEmpty());
-        Assertions.assertFalse(content.min().isEmpty());
-        WinnerInfo minWinnerInfo = content.min().get(ZERO);
-        WinnerInfo maxWinnerInfo = content.max().get(ZERO);
+        Assertions.assertNotNull(content.winnerMinInterval());
+        Assertions.assertNotNull(content.winnerMaxInterval());
+        Assertions.assertFalse(content.winnerMaxInterval().isEmpty());
+        Assertions.assertFalse(content.winnerMinInterval().isEmpty());
+        WinnerInfo minWinnerInfo = content.winnerMinInterval().get(ZERO);
+        WinnerInfo maxWinnerInfo = content.winnerMaxInterval().get(ZERO);
         Assertions.assertEquals(minWinnerInfo.interval(), ONE.intValue());
         Assertions.assertEquals(minWinnerInfo.producer(), producer.getName());
         Assertions.assertEquals(minWinnerInfo.previousWin(), maxWinnerInfo.previousWin());
@@ -106,13 +106,13 @@ class GoldenRaspberryAwardsV1ControllerMockedSuccessTest {
         var response = resultActions.andReturn().getResponse();
         var content = mapper.readValue(response.getContentAsString(), Winners.class);
         Assertions.assertNotNull(content);
-        Assertions.assertNotNull(content.min());
-        Assertions.assertNotNull(content.max());
-        Assertions.assertFalse(content.max().isEmpty());
-        Assertions.assertFalse(content.min().isEmpty());
+        Assertions.assertNotNull(content.winnerMinInterval());
+        Assertions.assertNotNull(content.winnerMaxInterval());
+        Assertions.assertFalse(content.winnerMaxInterval().isEmpty());
+        Assertions.assertFalse(content.winnerMinInterval().isEmpty());
 
-        WinnerInfo minWinnerInfo = content.min().get(ZERO);
-        WinnerInfo maxWinnerInfo = content.max().get(ZERO);
+        WinnerInfo minWinnerInfo = content.winnerMinInterval().get(ZERO);
+        WinnerInfo maxWinnerInfo = content.winnerMaxInterval().get(ZERO);
         Assertions.assertEquals(minWinnerInfo.interval(), ONE.intValue());
         Assertions.assertEquals(minWinnerInfo.producer(), producer.getName());
         Assertions.assertEquals(minWinnerInfo.previousWin(), movieOne.getReleaseYear());
@@ -162,13 +162,13 @@ class GoldenRaspberryAwardsV1ControllerMockedSuccessTest {
         var response = resultActions.andReturn().getResponse();
         var content = mapper.readValue(response.getContentAsString(), Winners.class);
         Assertions.assertNotNull(content);
-        Assertions.assertNotNull(content.min());
-        Assertions.assertNotNull(content.max());
-        Assertions.assertFalse(content.max().isEmpty());
-        Assertions.assertFalse(content.min().isEmpty());
+        Assertions.assertNotNull(content.winnerMinInterval());
+        Assertions.assertNotNull(content.winnerMaxInterval());
+        Assertions.assertFalse(content.winnerMaxInterval().isEmpty());
+        Assertions.assertFalse(content.winnerMinInterval().isEmpty());
 
-        WinnerInfo minWinnerInfo = content.min().get(ZERO);
-        WinnerInfo maxWinnerInfo = content.max().get(ZERO);
+        WinnerInfo minWinnerInfo = content.winnerMinInterval().get(ZERO);
+        WinnerInfo maxWinnerInfo = content.winnerMaxInterval().get(ZERO);
         Assertions.assertEquals(minWinnerInfo.interval(), ONE.intValue());
         Assertions.assertEquals(minWinnerInfo.producer(), producer.getName());
         Assertions.assertEquals(minWinnerInfo.previousWin(), movieOne.getReleaseYear());

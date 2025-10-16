@@ -38,10 +38,10 @@ class GoldenRaspberryAwardsV1ControllerTest {
                 .andExpect(status().is(200));
         var response = resultActions.andReturn().getResponse();
         var content = mapper.readValue(response.getContentAsString(), Winners.class);
-        Assertions.assertEquals(1, content.min().size());
-        Assertions.assertEquals(1, content.max().size());
-        WinnerInfo minWinnerInfo = content.min().get(0);
-        WinnerInfo maxWinnerInfo = content.max().get(0);
+        Assertions.assertEquals(1, content.winnerMinInterval().size());
+        Assertions.assertEquals(1, content.winnerMaxInterval().size());
+        WinnerInfo minWinnerInfo = content.winnerMinInterval().get(0);
+        WinnerInfo maxWinnerInfo = content.winnerMaxInterval().get(0);
         Assertions.assertEquals(1, minWinnerInfo.interval());
         Assertions.assertEquals(13, maxWinnerInfo.interval());
     }

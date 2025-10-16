@@ -7,7 +7,7 @@ import java.util.Set;
 @Entity(name = "studio")
 @Table(name = "studio")
 @SequenceGenerator(name = "studios_seq", sequenceName = "studios_seq", allocationSize = 1)
-public class StudioEntity {
+public class StudioEntity implements IEntity {
 
     @Id
     @Column(name = "studio_id")
@@ -24,26 +24,23 @@ public class StudioEntity {
         return id;
     }
 
-    public StudioEntity setId(BigInteger id) {
+    public void setId(BigInteger id) {
         this.id = id;
-        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public StudioEntity setName(String name) {
+    public void setName(String name) {
         this.name = name;
-        return this;
     }
 
     public Set<MovieEntity> getMovies() {
         return movies;
     }
 
-    public StudioEntity setMovies(Set<MovieEntity> movies) {
+    public void setMovies(Set<MovieEntity> movies) {
         this.movies = movies;
-        return this;
     }
 }

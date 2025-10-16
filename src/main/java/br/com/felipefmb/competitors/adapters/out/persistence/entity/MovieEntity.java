@@ -1,6 +1,7 @@
 package br.com.felipefmb.competitors.adapters.out.persistence.entity;
 
 import jakarta.persistence.*;
+import jakarta.persistence.Entity;
 
 import java.math.BigInteger;
 import java.util.Set;
@@ -8,7 +9,7 @@ import java.util.Set;
 @Entity(name = "movie")
 @Table(name = "movie")
 @SequenceGenerator(name = "movies_seq", sequenceName = "movies_seq", allocationSize = 1)
-public class MovieEntity {
+public class MovieEntity implements IEntity {
 
     @Id
     @Column(name = "movie_id")
@@ -39,53 +40,47 @@ public class MovieEntity {
         return id;
     }
 
-    public MovieEntity setId(BigInteger id) {
+    public void setId(BigInteger id) {
         this.id = id;
-        return this;
     }
 
     public Integer getReleaseYear() {
         return releaseYear;
     }
 
-    public MovieEntity setReleaseYear(Integer releaseYear) {
+    public void setReleaseYear(Integer releaseYear) {
         this.releaseYear = releaseYear;
-        return this;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public MovieEntity setTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
-        return this;
     }
 
     public Set<StudioEntity> getMovieStudios() {
         return movieStudios;
     }
 
-    public MovieEntity setMovieStudios(Set<StudioEntity> movieStudios) {
+    public void setMovieStudios(Set<StudioEntity> movieStudios) {
         this.movieStudios = movieStudios;
-        return this;
     }
 
     public Set<ProducerEntity> getMovieProducers() {
         return movieProducers;
     }
 
-    public MovieEntity setMovieProducers(Set<ProducerEntity> movieProducers) {
+    public void setMovieProducers(Set<ProducerEntity> movieProducers) {
         this.movieProducers = movieProducers;
-        return this;
     }
 
     public boolean isWinner() {
         return winner;
     }
 
-    public MovieEntity setWinner(boolean winner) {
+    public void setWinner(boolean winner) {
         this.winner = winner;
-        return this;
     }
 }
